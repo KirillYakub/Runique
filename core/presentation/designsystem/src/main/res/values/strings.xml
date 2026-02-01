@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="runique">Runique</string>
+    <string name="welcome_to_runique">Welcome to Runique!</string>
+    <string name="runique_description">Track your runs, set goals and achieve fitness milestones with our intuitive app.</string>
+    <string name="sign_up">Sign up</string>
+    <string name="sign_in">Sign in</string>
+    <string name="create_account">Create Account</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="email_example">Your email</string>
+    <string name="must_be_a_valid_email">Must be a valid email</string>
+    <string name="password_is_visible">Password is visible</string>
+    <string name="password_is_hidden">Password is hidden</string>
+    <string name="password">Password</string>
+    <string name="at_least_x_characters">At least %d characters</string>
+    <string name="at_least_one_number">At least one number</string>
+    <string name="lower_case">Contains lowercase character</string>
+    <string name="upper_case">Contains uppercase character</string>
+    <string name="register">Register</string>
+    <string name="error_email_already_exists">A user with that email already exists</string>
+    <string name="registration_success">Registration successful! You can log in now</string>
+    <string name="hi_there">Hi there!</string>
+    <string name="runique_welcome_text">Welcome to your ultimate running companion! Track, analyze and conquer your runs.</string>
+    <string name="do_not_have_an_account">Do not have an account?</string>
+    <string name="login_success">Login success!</string>
+    <string name="go_back">Go back</string>
+    <string name="more_options">More options</string>
+    <string name="analytics">Analytics</string>
+    <string name="logout">Log out</string>
+</resources>
