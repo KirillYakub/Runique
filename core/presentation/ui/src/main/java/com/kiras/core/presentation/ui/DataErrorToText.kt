@@ -7,6 +7,15 @@ fun DataError.asUiText(): UiText {
         DataError.Local.DISC_FULL -> UiText.StringResource(
             id = R.string.error_disc_full
         )
+        DataError.Local.CONFLICT -> UiText.StringResource(
+            id = R.string.error_email_already_exists
+        )
+        DataError.Local.INVALID_CREDENTIALS -> UiText.StringResource(
+            id = R.string.error_email_password_incorrect
+        )
+        DataError.Local.NO_ACTIVE_SESSION -> UiText.StringResource(
+            id = R.string.error_no_active_session
+        )
         DataError.Network.REQUEST_TIMEOUT -> UiText.StringResource(
             id = R.string.error_request_timeout
         )

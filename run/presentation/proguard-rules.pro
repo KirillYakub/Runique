@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Coroutines / Serialization naming conflicts
+-keepnames class kotlinx.serialization.internal.** { *; }
+
+# Prevent duplicate class names for anonymous functions
+-dontobfuscate

@@ -20,7 +20,7 @@
     <string name="upper_case">Contains uppercase character</string>
     <string name="register">Register</string>
     <string name="error_email_already_exists">A user with that email already exists</string>
-    <string name="registration_success">Registration successful! You can log in now</string>
+    <string name="registration_success">Registration successful! Welcome to Runique</string>
     <string name="hi_there">Hi there!</string>
     <string name="runique_welcome_text">Welcome to your ultimate running companion! Track, analyze and conquer your runs.</string>
     <string name="do_not_have_an_account">Do not have an account?</string>

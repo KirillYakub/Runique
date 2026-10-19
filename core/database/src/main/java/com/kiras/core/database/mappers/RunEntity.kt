@@ -1,6 +1,5 @@
 package com.kiras.core.database.mappers
 
-import android.util.Log
 import com.kiras.core.database.entity.RunEntity
 import com.kiras.core.domain.location.Location
 import com.kiras.core.domain.run.Run
@@ -25,9 +24,10 @@ fun RunEntity.toRun(): Run {
     )
 }
 
-fun Run.toRunEntity(): RunEntity {
+fun Run.toRunEntity(userId: String): RunEntity {
     return RunEntity(
         id = id ?: ObjectId().toHexString(),
+        userId = userId,
         durationMillis = duration.inWholeMilliseconds,
         dateTimeUtc = dateTimeUtc.toInstant().toString(),
         latitude = location.lat,

@@ -15,7 +15,6 @@ dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.android.tools.common)
     compileOnly(libs.kotlin.gradlePlugin)
-    compileOnly(libs.ksp.gradlePlugin)
     compileOnly(libs.room.gradlePlugin)
 }
 
@@ -45,17 +44,9 @@ gradlePlugin {
             id = "runique.android.room"
             implementationClass = "AndroidRoomConventionPlugin"
         }
-        register("androidDynamicFeature") {
-            id = "runique.android.dynamic.feature"
-            implementationClass = "AndroidDynamicFeatureConventionPlugin"
-        }
         register("jvmLibrary") {
             id = "runique.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
-        }
-        register("jvmKtor") {
-            id = "runique.jvm.ktor"
-            implementationClass = "JvmKtorConventionPlugin"
         }
     }
 }

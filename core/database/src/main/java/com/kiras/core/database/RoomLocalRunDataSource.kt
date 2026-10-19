@@ -1,7 +1,6 @@
 package com.kiras.core.database
 
 import android.database.sqlite.SQLiteFullException
-import android.util.Log
 import com.kiras.core.database.dao.RunDao
 import com.kiras.core.database.mappers.toRun
 import com.kiras.core.database.mappers.toRunEntity
@@ -17,15 +16,15 @@ class RoomLocalRunDataSource(
     private val runDao: RunDao
 ) : LocalRunDataSource {
 
-    override fun getRuns(): Flow<List<Run>> {
-        return runDao.getRuns().map { runs ->
+    override fun getRuns(userId: String): Flow<List<Run>> {
+        return runDao.getRunsForUser(userId).map { runs ->
             runs.map { it.toRun() }
         }
     }
 
-    override suspend fun upsertRun(run: Run): Result<RunId, DataError.Local> {
+    override suspend fun upsertRun(run: Run, userId: String): Result<RunId, DataError.Local> {
         return try {
-            val entity = run.toRunEntity()
+            val entity = run.toRunEntity(userId)
             runDao.upsertRun(entity)
             Result.Success(entity.id)
         } catch (e: SQLiteFullException) {
@@ -33,21 +32,11 @@ class RoomLocalRunDataSource(
         }
     }
 
-    override suspend fun upsertRuns(runs: List<Run>): Result<List<RunId>, DataError.Local> {
-        return try {
-            val entities = runs.map { it.toRunEntity() }
-            runDao.upsertRuns(entities)
-            Result.Success(entities.map { it.id })
-        } catch (e: SQLiteFullException) {
-            Result.Error(DataError.Local.DISC_FULL)
-        }
+    override suspend fun deleteRun(id: RunId, userId: String) {
+        runDao.deleteRun(id, userId)
     }
 
-    override suspend fun deleteRun(id: RunId) {
-        runDao.deleteRun(id)
-    }
-
-    override suspend fun deleteAllRuns() {
-        runDao.deleteAllRuns()
+    override suspend fun deleteAllRuns(userId: String) {
+        runDao.deleteAllRunsForUser(userId)
     }
 }

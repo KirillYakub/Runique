@@ -3,21 +3,24 @@ package com.kiras.core.database.dao
 import androidx.room.Dao
 import androidx.room.Query
 
+/**
+ * Aggregates return null when the user has no runs, so every result is nullable.
+ */
 @Dao
 interface AnalyticsDao {
 
-    @Query("SELECT SUM(distanceMeters) FROM runentity")
-    suspend fun getTotalDistanceRun(): Int
+    @Query("SELECT SUM(distanceMeters) FROM runentity WHERE userId = :userId")
+    suspend fun getTotalDistanceRun(userId: String): Int?
 
-    @Query("SELECT SUM(durationMillis) FROM runentity")
-    suspend fun getTotalTimeRun(): Long
+    @Query("SELECT SUM(durationMillis) FROM runentity WHERE userId = :userId")
+    suspend fun getTotalTimeRun(userId: String): Long?
 
-    @Query("SELECT MAX(maxSpeedKm) FROM runentity")
-    suspend fun getMaxRunSpeed(): Double
+    @Query("SELECT MAX(maxSpeedKm) FROM runentity WHERE userId = :userId")
+    suspend fun getMaxRunSpeed(userId: String): Double?
 
-    @Query("SELECT AVG(distanceMeters) FROM runentity")
-    suspend fun getAvgDistancePerRun(): Double
+    @Query("SELECT AVG(distanceMeters) FROM runentity WHERE userId = :userId")
+    suspend fun getAvgDistancePerRun(userId: String): Double?
 
-    @Query("SELECT AVG((durationMillis / 60000.0) / (distanceMeters / 1000.0)) FROM runentity")
-    suspend fun getAvgPacePerRun(): Double
+    @Query("SELECT AVG((durationMillis / 60000.0) / (distanceMeters / 1000.0)) FROM runentity WHERE userId = :userId")
+    suspend fun getAvgPacePerRun(userId: String): Double?
 }

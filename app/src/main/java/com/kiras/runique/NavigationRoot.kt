@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
+import com.kiras.analytics.presentation.AnalyticsDashboardScreenRoot
 import com.kiras.auth.presentation.intro.IntroScreenRoot
 import com.kiras.auth.presentation.login.LoginScreenRoot
 import com.kiras.auth.presentation.register.RegisterScreenRoot
@@ -19,15 +20,15 @@ import com.kiras.run.presentation.run_overview.RunOverviewScreenRoot
 @Composable
 fun NavigationRoot(
     navHostController: NavHostController,
-    isLoggedIn: Boolean,
-    onAnalyticsClick: () -> Unit
+    isLoggedIn: Boolean
 ) {
     NavHost(
         navController = navHostController,
         startDestination = if(!isLoggedIn) "auth" else "run"
     ) {
         authGraph(navHostController)
-        runGraph(navHostController, onAnalyticsClick)
+        runGraph(navHostController)
+        analyticsGraph(navHostController)
     }
 }
 
@@ -58,7 +59,11 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
                     }
                 },
                 onSuccessfulRegistrationClick = {
-                    navController.navigate("login")
+                    navController.navigate("run") {
+                        popUpTo("auth") {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -85,10 +90,7 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
     }
 }
 
-private fun NavGraphBuilder.runGraph(
-    navHostController: NavHostController,
-    onAnalyticsClick: () -> Unit
-) {
+private fun NavGraphBuilder.runGraph(navHostController: NavHostController) {
     navigation(
         startDestination = "run_overview",
         route = "run"
@@ -105,7 +107,9 @@ private fun NavGraphBuilder.runGraph(
                         }
                     }
                 },
-                onAnalyticsClick = onAnalyticsClick
+                onAnalyticsClick = {
+                    navHostController.navigate("analytics")
+                }
             )
         }
         composable(
@@ -141,5 +145,15 @@ private fun NavGraphBuilder.runGraph(
                 }
             )
         }
+    }
+}
+
+private fun NavGraphBuilder.analyticsGraph(navHostController: NavHostController) {
+    composable("analytics") {
+        AnalyticsDashboardScreenRoot(
+            onBackClick = {
+                navHostController.navigateUp()
+            }
+        )
     }
 }

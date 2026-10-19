@@ -12,6 +12,8 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.timber)
 
+    implementation(projects.core.presentation.ui)
+
     implementation(projects.core.domain)
     implementation(projects.run.domain)
 }

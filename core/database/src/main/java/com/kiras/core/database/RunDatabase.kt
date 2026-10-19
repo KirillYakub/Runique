@@ -4,21 +4,19 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.kiras.core.database.dao.AnalyticsDao
 import com.kiras.core.database.dao.RunDao
-import com.kiras.core.database.dao.RunPendingSyncDao
-import com.kiras.core.database.entity.DeletedRunSyncEntity
+import com.kiras.core.database.dao.UserDao
 import com.kiras.core.database.entity.RunEntity
-import com.kiras.core.database.entity.RunPendingSyncEntity
+import com.kiras.core.database.entity.UserEntity
 
 @Database(
     entities = [
-        RunEntity::class,
-        RunPendingSyncEntity::class,
-        DeletedRunSyncEntity::class
+        UserEntity::class,
+        RunEntity::class
     ],
-    version = 1
+    version = 2
 )
 abstract class RunDatabase: RoomDatabase() {
     abstract val runDao: RunDao
-    abstract val runPendingSyncDao: RunPendingSyncDao
+    abstract val userDao: UserDao
     abstract val analyticsDao: AnalyticsDao
 }
