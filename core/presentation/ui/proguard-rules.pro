@@ -19,3 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Keep all top-level functions (which end in Kt) in this package
+-keep class com.kiras.core.presentation.ui.**Kt { *; }

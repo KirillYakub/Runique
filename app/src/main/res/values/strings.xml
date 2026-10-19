@@ -1,7 +1,3 @@
 <resources>
     <string name="app_name">Runique</string>
-    <string name="title_analytics_feature">Analytics</string>
-    <string name="could_not_install_module">Could not install module</string>
-    <string name="installation_failed">Installation failed</string>
-    <string name="installing_module">Installing module</string>
 </resources>

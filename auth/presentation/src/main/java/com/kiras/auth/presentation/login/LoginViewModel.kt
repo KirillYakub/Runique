@@ -8,10 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.kiras.auth.domain.AuthRepository
 import com.kiras.auth.domain.UserDataValidator
 import com.kiras.auth.presentation.register.textAsFlow
-import com.kiras.core.domain.util.DataError
 import com.kiras.core.domain.util.Result
-import com.kiras.core.presentation.ui.R
-import com.kiras.core.presentation.ui.UiText
 import com.kiras.core.presentation.ui.asUiText
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.combine
@@ -59,19 +56,13 @@ class LoginViewModel(
             state = state.copy(isLoggingIn = true)
             val result = authRepository.login(
                 email = state.email.text.toString().trim(),
-                password = state.password.text.toString().trim(),
+                // Not trimmed: registration stores the password exactly as typed.
+                password = state.password.text.toString(),
             )
             state = state.copy(isLoggingIn = false)
             when(result) {
                 is Result.Error -> {
-                    if(result.error == DataError.Network.UNAUTHORIZED) {
-                        eventChannel.send(LoginEvent.Error(
-                            UiText.StringResource(id = R.string.error_email_password_incorrect)
-                        ))
-                    }
-                    else {
-                        eventChannel.send(LoginEvent.Error(result.error.asUiText()))
-                    }
+                    eventChannel.send(LoginEvent.Error(result.error.asUiText()))
                 }
                 is Result.Success -> {
                     eventChannel.send(LoginEvent.LoginSuccess)

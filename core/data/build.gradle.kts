@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.runique.android.library)
-    alias(libs.plugins.runique.jvm.ktor)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -10,6 +10,8 @@ android {
 dependencies {
     implementation(libs.timber)
     implementation(libs.bundles.koin)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.org.mongodb.bson)
 
     implementation(projects.core.domain)
     implementation(projects.core.database)

@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.runique.android.application)
     alias(libs.plugins.runique.android.application.compose)
-    alias(libs.plugins.runique.jvm.ktor)
     alias(libs.plugins.mapsplatform.secrets.plugin)
 }
 
@@ -12,7 +11,6 @@ android {
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-    dynamicFeatures += setOf(":analytics:feature")
 }
 
 dependencies {
@@ -39,8 +37,6 @@ dependencies {
 
     // Koin
     implementation(libs.bundles.koin)
-
-    api(libs.core)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -72,5 +68,8 @@ dependencies {
     implementation(projects.run.domain)
     implementation(projects.run.data)
     implementation(projects.run.location)
-    implementation(projects.run.network)
+
+    implementation(projects.analytics.presentation)
+    implementation(projects.analytics.domain)
+    implementation(projects.analytics.data)
 }
