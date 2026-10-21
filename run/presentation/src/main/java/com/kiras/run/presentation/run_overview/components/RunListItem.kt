@@ -79,7 +79,7 @@ fun RunListItem(
                 duration = runUi.duration,
                 modifier = Modifier.fillMaxWidth()
             )
-            HorizontalDivider(color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f))
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             RunningDateSection(dateTime = runUi.dateTime)
             DataGrid(
                 runUi = runUi,

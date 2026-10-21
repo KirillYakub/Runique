@@ -14,10 +14,7 @@ val databaseModule = module {
             androidApplication(),
             RunDatabase::class.java,
             "run_db"
-        )
-            // v1 runs had no owner and cannot be attributed to a local user, so they are dropped.
-            .fallbackToDestructiveMigration(dropAllTables = true)
-            .build()
+        ).build()
     }
     single {
         get<RunDatabase>().runDao

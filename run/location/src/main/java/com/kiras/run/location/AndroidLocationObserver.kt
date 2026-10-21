@@ -19,6 +19,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlin.time.Duration.Companion.milliseconds
 
 class AndroidLocationObserver(
     private val context: Context
@@ -36,7 +37,7 @@ class AndroidLocationObserver(
                 isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 
                 if(!isGpsEnabled && !isNetworkEnabled) {
-                    delay(2000)
+                    delay(2000.milliseconds)
                 }
             }
             if (ActivityCompat.checkSelfPermission(
