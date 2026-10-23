@@ -2,10 +2,10 @@
 
 - Features (`auth`, `run`, `analytics`, …) are split into `:<feature>:domain`, `:<feature>:data`, `:<feature>:presentation`. Extra technical modules sit beside them (for example `:run:location`).
 - Shared code lives in `:core:domain`, `:core:data`, `:core:database`, `:core:presentation:ui`, `:core:presentation:designsystem`.
-- `:app` depends on every module and only wires them together: Koin setup in `RuniqueApp`, navigation, `MainActivity`.
+- `:app` depends on every module and only wires them together: Koin setup in `RuniqueApp`, all navigation graphs in `NavigationRoot` (see navigation rule), `MainActivity`.
 - Convention plugins (from `build-logic`):
   - `:domain` → `runique.jvm.library` (pure Kotlin, no Android)
-  - `:data`, `:database`, `:location` → `runique.android.library` (+ `runique.android.room` only for the module that owns the Room database)
+  - `:data`, `:database`, `:location` → `runique.android.library` (+ `runique.android.room` for every module that uses `RunDatabase` or its DAOs, since they need Room on the classpath)
   - `:presentation` → `runique.android.feature.ui`
   - core UI → `runique.android.library.compose`
 - Allowed dependencies:

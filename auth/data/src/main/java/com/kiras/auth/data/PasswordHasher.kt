@@ -8,24 +8,16 @@ import java.util.Base64
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
 
-/**
- * Salted PBKDF2-HMAC-SHA256 password hashing.
- *
- * Hashes are stored as `pbkdf2_sha256$<iterations>$<base64 salt>$<base64 hash>` so the
- * parameters travel with the hash and can be raised later without breaking existing users.
- */
-class PasswordHasher(
-    private val iterations: Int = DEFAULT_ITERATIONS
-) {
+class PasswordHasher {
 
     private val secureRandom = SecureRandom()
 
     suspend fun hash(password: String): String = withContext(Dispatchers.Default) {
         val salt = ByteArray(SALT_LENGTH_BYTES).also(secureRandom::nextBytes)
-        val hash = pbkdf2(password, salt, iterations, KEY_LENGTH_BITS)
+        val hash = pbkdf2(password, salt, ITERATIONS, KEY_LENGTH_BITS)
         listOf(
             ALGORITHM_ID,
-            iterations.toString(),
+            ITERATIONS.toString(),
             encoder.encodeToString(salt),
             encoder.encodeToString(hash)
         ).joinToString(SEPARATOR)
@@ -62,7 +54,7 @@ class PasswordHasher(
         const val ALGORITHM_ID = "pbkdf2_sha256"
         const val PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA256"
         const val SEPARATOR = "$"
-        const val DEFAULT_ITERATIONS = 210_000
+        const val ITERATIONS = 210_000
         const val SALT_LENGTH_BYTES = 16
         const val KEY_LENGTH_BITS = 256
 

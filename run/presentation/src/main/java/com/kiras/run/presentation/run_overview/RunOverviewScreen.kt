@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.kiras.core.presentation.designsystem.AnalyticsIcon
 import com.kiras.core.presentation.designsystem.LogoIcon
 import com.kiras.core.presentation.designsystem.LogoutIcon
-import com.kiras.core.presentation.designsystem.R
+import com.kiras.run.presentation.R
 import com.kiras.core.presentation.designsystem.RunIcon
 import com.kiras.core.presentation.designsystem.RuniqueTheme
 import com.kiras.core.presentation.designsystem.components.RuniqueFloatingActionButton
@@ -34,7 +34,6 @@ import com.kiras.core.presentation.designsystem.components.RuniqueToolbar
 import com.kiras.core.presentation.designsystem.components.util.DropDownItem
 import com.kiras.run.presentation.run_overview.components.RunListItem
 import org.koin.compose.viewmodel.koinViewModel
-import com.kiras.run.presentation.R.string
 
 @Composable
 fun RunOverviewScreenRoot(
@@ -47,9 +46,9 @@ fun RunOverviewScreenRoot(
         state = viewModel.state,
         onAction = { action ->
             when(action) {
-                RunOverviewActions.OnStartClick -> onStartRunClick()
-                RunOverviewActions.OnLogOutClick -> onLogoutClick()
-                RunOverviewActions.OnAnalyticsClick -> onAnalyticsClick()
+                RunOverviewAction.OnStartClick -> onStartRunClick()
+                RunOverviewAction.OnLogOutClick -> onLogoutClick()
+                RunOverviewAction.OnAnalyticsClick -> onAnalyticsClick()
                 else -> Unit
             }
             viewModel.onAction(action)
@@ -61,7 +60,7 @@ fun RunOverviewScreenRoot(
 @Composable
 private fun RunOverviewScreen(
     state: RunOverviewState,
-    onAction: (RunOverviewActions) -> Unit
+    onAction: (RunOverviewAction) -> Unit
 ) {
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
@@ -85,8 +84,8 @@ private fun RunOverviewScreen(
                 ),
                 onMenuItemClick = { index ->
                     when(index) {
-                        0 -> onAction(RunOverviewActions.OnAnalyticsClick)
-                        1 -> onAction(RunOverviewActions.OnLogOutClick)
+                        0 -> onAction(RunOverviewAction.OnAnalyticsClick)
+                        1 -> onAction(RunOverviewAction.OnLogOutClick)
                     }
                 },
                 startContent = {
@@ -103,7 +102,7 @@ private fun RunOverviewScreen(
             RuniqueFloatingActionButton(
                 icon = RunIcon,
                 onClick = {
-                    onAction(RunOverviewActions.OnStartClick)
+                    onAction(RunOverviewAction.OnStartClick)
                 }
             )
         }
@@ -125,7 +124,7 @@ private fun RunOverviewScreen(
                     RunListItem(
                         runUi = it,
                         onDeleteClick = {
-                            onAction(RunOverviewActions.DeleteRun(it))
+                            onAction(RunOverviewAction.OnDeleteRunClick(it))
                         }
                     )
                 }
@@ -140,7 +139,7 @@ private fun RunOverviewScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = stringResource(id = string.no_completed_runs_found),
+                    text = stringResource(id = R.string.no_completed_runs_found),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }

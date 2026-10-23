@@ -3,7 +3,7 @@
 - Each Gradle module that needs bindings (every module except `:domain` modules) has exactly one Koin module, in `di/<Feature><Layer>Module.kt`, named `val <feature><Layer>Module = module { }` (for example `runPresentationModule`, `runDataModule`, `coreDatabaseModule`).
 - Bindings:
   - implementations: `singleOf(::RoomXRepository).bind<XRepository>()`
-  - use cases: `factoryOf(::XUseCase)`, in the feature's presentation module
+  - use cases (only when one exists, see domain-layer rule): `factoryOf(::XUseCase)`, in the feature's presentation module
   - domain classes that hold state (`RunningTracker`): `singleOf(::RunningTracker)`, also in the feature's presentation module, separate from the ViewModels
   - ViewModels: `viewModelOf(::XViewModel)`
   - DAOs: `single { get<RunDatabase>().xDao }`

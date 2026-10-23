@@ -8,7 +8,7 @@
     - `var state by mutableStateOf(XState())` with `private set`
     - a single public `fun onAction(action: XAction)`
     - events sent through `private val eventChannel = Channel<XEvent>()` and exposed as `val events = eventChannel.receiveAsFlow()`
-    - only use cases injected.
+    - injects repositories directly, use cases when one exists (see domain-layer rule), and stateful domain classes (for example `RunningTracker`).
   - `XScreen.kt` containing:
     - a public `XScreenRoot(...)` that takes navigation lambdas and `viewModel: XViewModel = koinViewModel()` and handles events with `ObserveAsEvents`
     - a `private fun XScreen(state, onAction)` that is stateless
@@ -16,9 +16,10 @@
 - Screen subpackages, only when needed:
   - `components/`: local composables (see compose-components rule)
   - `model/`: UI models with the `Ui` suffix (`RunUi`)
-  - `mappers/`: `XMappers.kt` with `internal fun Run.toRunUi()`
+  - `mappers/`: `XMappers.kt` with `fun Run.toRunUi()`
   - `util/`: feature-only helpers and formatters
-- Visibility: everything is `internal` except `XScreenRoot` and the module's Koin module.
+- Feature-level `util/Routes.kt` holds the feature's navigation routes (see navigation rule).
+- Visibility: no `internal`. `XScreenRoot` is public; `XScreen` and the preview are `private` (see code-style rule).
 - Formatters used by more than one feature go in `:core:presentation:ui` (`RunDataFormatters.kt`); feature-only ones go in the feature's `util/`. Never put formatters in mapper files.
 - Errors become text with `DataError.asUiText()` → `UiText`. Do not use raw strings in ViewModels.
 - Each presentation module owns its `res/values/strings.xml`. `:core:presentation:designsystem` only holds strings used by its own components; `:core:presentation:ui` holds shared ones (error texts).

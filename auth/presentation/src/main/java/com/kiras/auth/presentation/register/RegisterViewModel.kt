@@ -1,14 +1,14 @@
 package com.kiras.auth.presentation.register
 
-import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kiras.auth.domain.AuthRepository
-import com.kiras.auth.domain.UserDataValidator
+import com.kiras.auth.domain.usecase.ValidateEmailUseCase
+import com.kiras.auth.domain.usecase.ValidatePasswordUseCase
+import com.kiras.auth.presentation.util.textAsFlow
 import com.kiras.core.domain.util.Result
 import com.kiras.core.presentation.ui.asUiText
 import kotlinx.coroutines.channels.Channel
@@ -17,11 +17,10 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-fun TextFieldState.textAsFlow() = snapshotFlow { text }
-
 class RegisterViewModel(
-        private val userDataValidator: UserDataValidator,
-        private val repository: AuthRepository
+    private val validateEmail: ValidateEmailUseCase,
+    private val validatePassword: ValidatePasswordUseCase,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     var state by mutableStateOf(RegisterState())
@@ -32,7 +31,7 @@ class RegisterViewModel(
 
     init {
         state.email.textAsFlow().onEach { email ->
-            val isEmailValid = userDataValidator.isValidEmail(email.toString())
+            val isEmailValid = validateEmail(email.toString())
             state = state.copy(
                 isEmailValid = isEmailValid,
                 canRegister = isEmailValid && state.passwordValidationState.isValidPassword && !state.isRegistering
@@ -40,7 +39,7 @@ class RegisterViewModel(
         }.launchIn(viewModelScope)
 
         state.password.textAsFlow().onEach { password ->
-            val passwordValidationState = userDataValidator.validatePassword(password.toString())
+            val passwordValidationState = validatePassword(password.toString())
             state = state.copy(
                 passwordValidationState = passwordValidationState,
                 canRegister = state.isEmailValid && passwordValidationState.isValidPassword && !state.isRegistering
@@ -64,7 +63,7 @@ class RegisterViewModel(
     private fun register() {
         viewModelScope.launch {
             state = state.copy(isRegistering = true)
-            val result = repository.register(
+            val result = authRepository.register(
                 email = state.email.text.toString().trim(),
                 password = state.password.text.toString()
             )

@@ -38,7 +38,7 @@ import com.kiras.run.presentation.util.hasLocationPermission
 import com.kiras.run.presentation.util.hasNotificationPermission
 import com.kiras.run.presentation.util.shouldShowLocationPermissionRationale
 import com.kiras.run.presentation.util.shouldShowNotificationPermissionRationale
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import java.io.ByteArrayOutputStream
 
 @Composable
@@ -92,7 +92,7 @@ fun ActiveRunScreenRoot(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ActiveRunScreen(
+private fun ActiveRunScreen(
     state: ActiveRunState,
     onServiceToggle: (isServiceRunning: Boolean) -> Unit,
     onAction: (ActiveRunAction) -> Unit
@@ -113,13 +113,13 @@ fun ActiveRunScreen(
         val showNotificationRationale = activity.shouldShowNotificationPermissionRationale()
 
         onAction(
-            ActiveRunAction.SubmitLocationPermissionInfo(
+            ActiveRunAction.OnSubmitLocationPermissionInfo(
                 acceptedLocationPermission = hasCourseLocationPermission && hasFineLocationPermission,
                 showLocationPermissionRationale = showLocationRationale
             )
         )
         onAction(
-            ActiveRunAction.SubmitNotificationPermissionInfo(
+            ActiveRunAction.OnSubmitNotificationPermissionInfo(
                 acceptedNotificationPermission = hasNotificationPermission,
                 showNotificationPermissionRationale = showNotificationRationale
             )
@@ -132,13 +132,13 @@ fun ActiveRunScreen(
         val showNotificationRationale = activity.shouldShowNotificationPermissionRationale()
 
         onAction(
-            ActiveRunAction.SubmitLocationPermissionInfo(
+            ActiveRunAction.OnSubmitLocationPermissionInfo(
                 acceptedLocationPermission = context.hasLocationPermission(),
                 showLocationPermissionRationale = showLocationRationale
             )
         )
         onAction(
-            ActiveRunAction.SubmitNotificationPermissionInfo(
+            ActiveRunAction.OnSubmitNotificationPermissionInfo(
                 acceptedNotificationPermission = context.hasNotificationPermission(),
                 showNotificationPermissionRationale = showNotificationRationale
             )
@@ -253,7 +253,7 @@ fun ActiveRunScreen(
                     text = stringResource(R.string.okay),
                     isLoading = false,
                     onClick = {
-                        onAction(ActiveRunAction.DismissRationaleDialog)
+                        onAction(ActiveRunAction.OnDismissRationaleDialog)
                         permissionLauncher.requestRuniquePermissions(context)
                     }
                 )
@@ -292,7 +292,7 @@ private fun ActivityResultLauncher<Array<String>>.requestRuniquePermissions(
 
 @Preview
 @Composable
-fun ActiveRunScreenPreview() {
+private fun ActiveRunScreenPreview() {
     RuniqueTheme {
         ActiveRunScreen(
             state = ActiveRunState(),

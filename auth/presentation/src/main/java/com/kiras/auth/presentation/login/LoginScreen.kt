@@ -28,18 +28,16 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kiras.auth.presentation.register.RegisterAction
 import com.kiras.core.presentation.designsystem.EmailIcon
 import com.kiras.core.presentation.designsystem.Poppins
-import com.kiras.core.presentation.designsystem.R
-import com.kiras.core.presentation.designsystem.RuniqueGray
+import com.kiras.auth.presentation.R
 import com.kiras.core.presentation.designsystem.RuniqueTheme
 import com.kiras.core.presentation.designsystem.components.GradientBackground
 import com.kiras.core.presentation.designsystem.components.RuniqueActionButton
 import com.kiras.core.presentation.designsystem.components.RuniquePasswordTextField
 import com.kiras.core.presentation.designsystem.components.RuniqueTextField
 import com.kiras.core.presentation.ui.ObserveAsEvents
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun LoginScreenRoot(
@@ -74,7 +72,7 @@ fun LoginScreenRoot(
 }
 
 @Composable
-fun LoginScreen(
+private fun LoginScreen(
     state: LoginState,
     onAction: (LoginAction) -> Unit,
 ) {
@@ -170,7 +168,7 @@ fun LoginScreen(
 
 @Preview
 @Composable
-fun LoginScreenPreview() {
+private fun LoginScreenPreview() {
     RuniqueTheme {
         LoginScreen(LoginState()) { }
     }

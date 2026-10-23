@@ -48,7 +48,7 @@ import com.kiras.core.presentation.designsystem.RunOutlinedIcon
 import com.kiras.core.presentation.designsystem.RuniqueTheme
 import com.kiras.core.presentation.designsystem.components.util.DropDownItem
 import com.kiras.run.presentation.R
-import com.kiras.run.presentation.run_overview.mapper.toRunUi
+import com.kiras.run.presentation.run_overview.mappers.toRunUi
 import com.kiras.run.presentation.run_overview.model.RunDataUi
 import com.kiras.run.presentation.run_overview.model.RunUi
 import java.time.ZonedDateTime
@@ -283,7 +283,7 @@ private fun DataGridCell(
 
 @Preview
 @Composable
-fun RunListPreview() {
+private fun RunListPreview() {
     RuniqueTheme {
         RunListItem(
             runUi = Run(

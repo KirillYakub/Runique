@@ -15,6 +15,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.kiras.core.domain.location.LocationWithAltitude
 import com.kiras.run.domain.LocationObserver
+import com.kiras.run.location.mappers.toLocationWithAltitude
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow

@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kiras.core.domain.SessionStorage
 import com.kiras.core.domain.run.RunRepository
-import com.kiras.run.presentation.run_overview.mapper.toRunUi
+import com.kiras.run.presentation.run_overview.mappers.toRunUi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -15,8 +15,8 @@ import kotlinx.coroutines.launch
 
 class RunOverviewViewModel(
     private val runRepository: RunRepository,
-    private val applicationScope: CoroutineScope,
-    private val sessionStorage: SessionStorage
+    private val sessionStorage: SessionStorage,
+    private val applicationScope: CoroutineScope
 ) : ViewModel() {
 
     var state by mutableStateOf(RunOverviewState())
@@ -29,21 +29,20 @@ class RunOverviewViewModel(
         }.launchIn(viewModelScope)
     }
 
-    fun onAction(action: RunOverviewActions) {
+    fun onAction(action: RunOverviewAction) {
         when(action) {
-            is RunOverviewActions.DeleteRun -> {
+            is RunOverviewAction.OnDeleteRunClick -> {
                 viewModelScope.launch {
                     runRepository.deleteRun(action.runUi.id)
                 }
             }
-            RunOverviewActions.OnLogOutClick -> logout()
-            RunOverviewActions.OnStartClick -> {}
+            RunOverviewAction.OnLogOutClick -> logout()
+            RunOverviewAction.OnStartClick -> {}
             else -> Unit
         }
     }
 
     private fun logout() {
-        // Runs stay on the device, so the user finds them again after the next login.
         applicationScope.launch {
             sessionStorage.set(null)
         }
