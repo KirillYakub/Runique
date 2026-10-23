@@ -1,0 +1,27 @@
+# Presentation (MVI)
+
+- One package per screen (`login/`, `run_overview/`, …) containing:
+  - `XAction.kt`: `sealed interface XAction` (singular), with `data object`/`data class` members named `OnXClick`, `OnXChange`, `OnXToggle`, …, always starting with `On` in PascalCase.
+  - `XEvent.kt`: `sealed interface XEvent` for one-shot events (navigation results, errors).
+  - `XState.kt`: `data class XState` with a default value for every field.
+  - `XViewModel.kt`:
+    - `var state by mutableStateOf(XState())` with `private set`
+    - a single public `fun onAction(action: XAction)`
+    - events sent through `private val eventChannel = Channel<XEvent>()` and exposed as `val events = eventChannel.receiveAsFlow()`
+    - injects repositories directly, use cases when one exists (see domain-layer rule), and stateful domain classes (for example `RunningTracker`).
+  - `XScreen.kt` containing:
+    - a public `XScreenRoot(...)` that takes navigation lambdas and `viewModel: XViewModel = koinViewModel()` and handles events with `ObserveAsEvents`
+    - a `private fun XScreen(state, onAction)` that is stateless
+    - a `private` `@Preview` wrapped in `RuniqueTheme`.
+- Screen subpackages, only when needed:
+  - `components/`: local composables (see compose-components rule)
+  - `model/`: UI models with the `Ui` suffix (`RunUi`)
+  - `mappers/`: `XMappers.kt` with `fun Run.toRunUi()`
+  - `util/`: feature-only helpers and formatters
+- Feature-level `util/Routes.kt` holds the feature's navigation routes (see navigation rule).
+- Visibility: no `internal`. `XScreenRoot` is public; `XScreen` and the preview are `private` (see code-style rule).
+- Formatters used by more than one feature go in `:core:presentation:ui` (`RunDataFormatters.kt`); feature-only ones go in the feature's `util/`. Never put formatters in mapper files.
+- Errors become text with `DataError.asUiText()` → `UiText`. Do not use raw strings in ViewModels.
+- Each presentation module owns its `res/values/strings.xml`. `:core:presentation:designsystem` only holds strings used by its own components; `:core:presentation:ui` holds shared ones (error texts).
+- UI colors come from `MaterialTheme.colorScheme`, never from palette constants, unless the scheme has no matching role.
+- Do not import code from another screen's package. Move shared helpers to the feature's `util/` package or to `:core:presentation:ui`.

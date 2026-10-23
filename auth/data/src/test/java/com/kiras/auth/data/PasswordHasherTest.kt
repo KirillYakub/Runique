@@ -8,7 +8,7 @@ import org.junit.Test
 
 class PasswordHasherTest {
 
-    private val hasher = PasswordHasher(iterations = 1_000)
+    private val hasher = PasswordHasher()
 
     @Test
     fun `hash verifies against the same password`() = runTest {
@@ -32,7 +32,7 @@ class PasswordHasherTest {
 
         assertFalse(first.contains("Secret123"))
         assertNotEquals(first, second)
-        assertTrue(first.startsWith("pbkdf2_sha256$1000$"))
+        assertTrue(first.startsWith("pbkdf2_sha256$210000$"))
     }
 
     @Test

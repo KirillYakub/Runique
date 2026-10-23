@@ -2,5 +2,6 @@
 <resources>
     <style name="Theme.Runique" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowBackground">@color/runique_background</item>
     </style>
 </resources>

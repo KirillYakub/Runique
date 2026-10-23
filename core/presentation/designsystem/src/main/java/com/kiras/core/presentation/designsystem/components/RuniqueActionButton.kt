@@ -20,8 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.kiras.core.presentation.designsystem.RuniqueBlack
-import com.kiras.core.presentation.designsystem.RuniqueGray
+import com.kiras.core.presentation.designsystem.RuniqueGrayTertiary
 
 @Composable
 fun RuniqueActionButton(
@@ -37,8 +36,8 @@ fun RuniqueActionButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = RuniqueGray,
-            disabledContentColor = RuniqueBlack
+            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            disabledContentColor = RuniqueGrayTertiary
         ),
         shape = RoundedCornerShape(100.dp),
         modifier = modifier.height(IntrinsicSize.Min)
@@ -78,11 +77,12 @@ fun RuniqueOutlinedActionButton(
         onClick = onClick,
         enabled = enabled,
         colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
             contentColor = MaterialTheme.colorScheme.onBackground
         ),
         border = BorderStroke(
             width = 0.5.dp,
-            color = MaterialTheme.colorScheme.onBackground
+            color = MaterialTheme.colorScheme.outline
         ),
         shape = RoundedCornerShape(100.dp),
         modifier = modifier.height(IntrinsicSize.Min)

@@ -66,7 +66,6 @@ dependencies {
 
     implementation(projects.run.presentation)
     implementation(projects.run.domain)
-    implementation(projects.run.data)
     implementation(projects.run.location)
 
     implementation(projects.analytics.presentation)

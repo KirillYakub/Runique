@@ -8,11 +8,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kiras.core.domain.location.Location
 import com.kiras.core.domain.run.Run
-import com.kiras.core.domain.run.RunRepository
 import com.kiras.core.domain.util.Result
 import com.kiras.core.presentation.ui.asUiText
 import com.kiras.run.domain.LocationDataCalculator
 import com.kiras.run.domain.RunningTracker
+import com.kiras.core.domain.run.RunRepository
 import com.kiras.run.presentation.active_run.service.ActiveRunService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -124,18 +124,18 @@ class ActiveRunViewModel(
                     shouldTrack = !state.shouldTrack
                 )
             }
-            is ActiveRunAction.SubmitLocationPermissionInfo -> {
+            is ActiveRunAction.OnSubmitLocationPermissionInfo -> {
                 hasLocationPermission.value = action.acceptedLocationPermission
                 state = state.copy(
                     showLocationPermissionRationale = action.showLocationPermissionRationale
                 )
             }
-            is ActiveRunAction.SubmitNotificationPermissionInfo -> {
+            is ActiveRunAction.OnSubmitNotificationPermissionInfo -> {
                 state = state.copy(
                     showNotificationPermissionRationale = action.showNotificationPermissionRationale
                 )
             }
-            ActiveRunAction.DismissRationaleDialog -> {
+            ActiveRunAction.OnDismissRationaleDialog -> {
                 state = state.copy(
                     showLocationPermissionRationale = false,
                     showNotificationPermissionRationale = false

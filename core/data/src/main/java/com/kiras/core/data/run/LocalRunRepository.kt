@@ -25,10 +25,6 @@ import timber.log.Timber
 import java.io.File
 import java.io.IOException
 
-/**
- * Runs are stored only on the device and always belong to the user of the active session.
- * Without a session nothing is read or written.
- */
 class LocalRunRepository(
     private val localRunDataSource: LocalRunDataSource,
     private val sessionStorage: SessionStorage,
@@ -55,7 +51,6 @@ class LocalRunRepository(
         val userId = activeUserId() ?: return Result.Error(DataError.Local.NO_ACTIVE_SESSION)
         val runId = run.id ?: ObjectId().toHexString()
 
-        // Saving must survive the caller's scope being cancelled once the run screen closes.
         return applicationScope.async {
             val mapPictureUrl = saveMapPicture(runId, mapPicture) ?: run.mapPictureUrl
             localRunDataSource.upsertRun(

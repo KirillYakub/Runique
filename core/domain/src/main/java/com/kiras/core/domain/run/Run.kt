@@ -6,7 +6,7 @@ import kotlin.time.Duration
 import kotlin.time.DurationUnit
 
 data class Run(
-    val id: String?, // null if new run
+    val id: String?,
     val duration: Duration,
     val dateTimeUtc: ZonedDateTime,
     val distanceMeters: Int,

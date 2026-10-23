@@ -6,8 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kiras.auth.domain.AuthRepository
-import com.kiras.auth.domain.UserDataValidator
-import com.kiras.auth.presentation.register.textAsFlow
+import com.kiras.auth.domain.usecase.ValidateEmailUseCase
+import com.kiras.auth.presentation.util.textAsFlow
 import com.kiras.core.domain.util.Result
 import com.kiras.core.presentation.ui.asUiText
 import kotlinx.coroutines.channels.Channel
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val authRepository: AuthRepository,
-    private val userDataValidator: UserDataValidator
+    private val validateEmail: ValidateEmailUseCase
 ) : ViewModel() {
 
     var state by mutableStateOf(LoginState())
@@ -33,7 +33,7 @@ class LoginViewModel(
             flow2 = state.password.textAsFlow()
         ) { email, password ->
             state = state.copy(
-                canLogin = userDataValidator.isValidEmail(email.toString().trim()) &&
+                canLogin = validateEmail(email.toString().trim()) &&
                     password.isNotEmpty()
             )
         }.launchIn(viewModelScope)
@@ -56,7 +56,6 @@ class LoginViewModel(
             state = state.copy(isLoggingIn = true)
             val result = authRepository.login(
                 email = state.email.text.toString().trim(),
-                // Not trimmed: registration stores the password exactly as typed.
                 password = state.password.text.toString(),
             )
             state = state.copy(isLoggingIn = false)

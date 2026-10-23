@@ -140,7 +140,6 @@ fun TrackerMap(
                 map.setOnCameraIdleListener {
                     createSnapshotJob?.cancel()
                     createSnapshotJob = GlobalScope.launch {
-                        // Make sure the map is sharp and focused before taking the screenshot
                         delay(500)
                         map.awaitSnapshot()?.let(onSnapshot)
                     }

@@ -1,16 +1,14 @@
 package com.kiras.runique
 
 import android.app.Application
-import com.kiras.analytics.data.di.analyticsModule
+import com.kiras.analytics.data.di.analyticsDataModule
 import com.kiras.analytics.presentation.di.analyticsPresentationModule
 import com.kiras.auth.data.di.authDataModule
-import com.kiras.auth.presentation.di.authViewModelModule
+import com.kiras.auth.presentation.di.authPresentationModule
 import com.kiras.core.data.di.coreDataModule
-import com.kiras.core.database.di.databaseModule
-import com.kiras.run.data.di.runDataModule
-import com.kiras.run.location.di.locationModule
-import com.kiras.run.presentation.active_run.di.activeRunViewModelModule
-import com.kiras.run.presentation.run_overview.di.runViewModelModule
+import com.kiras.core.database.di.coreDatabaseModule
+import com.kiras.run.location.di.runLocationModule
+import com.kiras.run.presentation.di.runPresentationModule
 import com.kiras.runique.di.appModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -32,16 +30,14 @@ class RuniqueApp : Application() {
             androidLogger()
             androidContext(this@RuniqueApp)
             modules(
-                authDataModule,
-                authViewModelModule,
                 appModule,
                 coreDataModule,
-                runViewModelModule,
-                activeRunViewModelModule,
-                locationModule,
-                databaseModule,
-                runDataModule,
-                analyticsModule,
+                coreDatabaseModule,
+                authDataModule,
+                authPresentationModule,
+                runLocationModule,
+                runPresentationModule,
+                analyticsDataModule,
                 analyticsPresentationModule
             )
         }

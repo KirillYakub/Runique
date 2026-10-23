@@ -3,9 +3,6 @@ package com.kiras.core.database.dao
 import androidx.room.Dao
 import androidx.room.Query
 
-/**
- * Aggregates return null when the user has no runs, so every result is nullable.
- */
 @Dao
 interface AnalyticsDao {
 
