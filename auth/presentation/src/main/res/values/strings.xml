@@ -8,6 +8,8 @@
     <string name="create_account">Create Account</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="login">Login</string>
+    <string name="username">Name</string>
+    <string name="username_example">Your name</string>
     <string name="email">Email</string>
     <string name="email_example">Your email</string>
     <string name="must_be_a_valid_email">Must be a valid email</string>

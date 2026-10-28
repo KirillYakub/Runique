@@ -26,7 +26,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.kiras.core.presentation.designsystem.CheckIcon
 import com.kiras.core.presentation.designsystem.EmailIcon
 import com.kiras.core.presentation.designsystem.RuniqueTheme
@@ -59,14 +58,14 @@ fun RuniqueTextField(
                 Text(
                     text = error,
                     color = MaterialTheme.colorScheme.error,
-                    fontSize = 12.sp
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
             else if(additionInfo != null) {
                 Text(
                     text = additionInfo,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontSize = 12.sp
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
         }

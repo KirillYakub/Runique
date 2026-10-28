@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.kiras.auth.presentation.R
 import com.kiras.core.presentation.designsystem.LogoIcon
 
@@ -32,7 +31,7 @@ fun RuniqueLogoVertical(
         Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = stringResource(R.string.runique),
-            fontSize = 24.sp,
+            style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Medium,
             color = MaterialTheme.colorScheme.onBackground
         )

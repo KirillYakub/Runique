@@ -1,5 +1,6 @@
 package com.kiras.core.database
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.kiras.core.database.dao.AnalyticsDao
@@ -13,7 +14,10 @@ import com.kiras.core.database.entity.UserEntity
         UserEntity::class,
         RunEntity::class
     ],
-    version = 2
+    version = 3,
+    autoMigrations = [
+        AutoMigration(from = 2, to = 3)
+    ]
 )
 abstract class RunDatabase: RoomDatabase() {
     abstract val runDao: RunDao

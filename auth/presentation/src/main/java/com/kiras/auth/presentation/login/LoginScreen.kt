@@ -27,7 +27,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.kiras.core.presentation.designsystem.EmailIcon
 import com.kiras.core.presentation.designsystem.Poppins
 import com.kiras.auth.presentation.R
@@ -92,7 +91,7 @@ private fun LoginScreen(
             )
             Text(
                 text = stringResource(id = R.string.runique_welcome_text),
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Spacer(modifier = Modifier.height(48.dp))

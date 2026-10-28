@@ -29,6 +29,7 @@ import com.kiras.auth.domain.PasswordValidationState
 import com.kiras.auth.domain.usecase.ValidatePasswordUseCase
 import com.kiras.core.presentation.designsystem.CheckIcon
 import com.kiras.core.presentation.designsystem.EmailIcon
+import com.kiras.core.presentation.designsystem.PersonIcon
 import com.kiras.core.presentation.designsystem.Poppins
 import com.kiras.auth.presentation.R
 import com.kiras.auth.presentation.register.components.PasswordRequirement
@@ -127,6 +128,15 @@ private fun RegisterScreen(
                 }
             )
             Spacer(modifier = Modifier.height(48.dp))
+            RuniqueTextField(
+                state = state.username,
+                startIcon = PersonIcon,
+                endIcon = if(state.isUsernameValid) CheckIcon else null,
+                hint = stringResource(R.string.username_example),
+                title = stringResource(R.string.username),
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
             RuniqueTextField(
                 state = state.email,
                 startIcon = EmailIcon,

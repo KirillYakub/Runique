@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
-class RoomAnalyticsRepository(
+class AnalyticsRepositoryImpl(
     private val analyticsDao: AnalyticsDao,
     private val sessionStorage: SessionStorage
 ): AnalyticsRepository {

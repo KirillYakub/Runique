@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kiras.core.domain.SessionStorage
 import com.kiras.core.domain.run.RunRepository
+import com.kiras.core.domain.user.UserRepository
+import com.kiras.core.domain.util.Result
 import com.kiras.run.presentation.run_overview.mappers.toRunUi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.launchIn
@@ -15,6 +17,7 @@ import kotlinx.coroutines.launch
 
 class RunOverviewViewModel(
     private val runRepository: RunRepository,
+    private val userRepository: UserRepository,
     private val sessionStorage: SessionStorage,
     private val applicationScope: CoroutineScope
 ) : ViewModel() {
@@ -27,6 +30,8 @@ class RunOverviewViewModel(
             val runsUi = runs.map { it.toRunUi() }
             state = state.copy(runs = runsUi)
         }.launchIn(viewModelScope)
+
+        loadUsername()
     }
 
     fun onAction(action: RunOverviewAction) {
@@ -36,9 +41,28 @@ class RunOverviewViewModel(
                     runRepository.deleteRun(action.runUi.id)
                 }
             }
-            RunOverviewAction.OnLogOutClick -> logout()
-            RunOverviewAction.OnStartClick -> {}
-            else -> Unit
+            RunOverviewAction.OnAccountClick -> {
+                state = state.copy(isAccountMenuOpen = true)
+            }
+            RunOverviewAction.OnAccountMenuDismiss,
+            RunOverviewAction.OnAnalyticsClick -> {
+                state = state.copy(isAccountMenuOpen = false)
+            }
+            RunOverviewAction.OnLogOutClick -> {
+                state = state.copy(isAccountMenuOpen = false)
+                logout()
+            }
+            RunOverviewAction.OnStartClick -> Unit
+        }
+    }
+
+    private fun loadUsername() {
+        viewModelScope.launch {
+            val userId = sessionStorage.get()?.userId ?: return@launch
+            val result = userRepository.getUser(userId)
+            if(result is Result.Success) {
+                state = state.copy(username = result.data.username)
+            }
         }
     }
 

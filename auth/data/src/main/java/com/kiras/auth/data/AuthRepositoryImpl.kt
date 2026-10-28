@@ -11,11 +11,13 @@ import com.kiras.core.domain.util.DataError
 import com.kiras.core.domain.util.EmptyResult
 import com.kiras.core.domain.util.Result
 
-class RoomAuthRepository(
+class AuthRepositoryImpl(
     private val userDao: UserDao,
     private val sessionStorage: SessionStorage,
     private val passwordHasher: PasswordHasher
 ): AuthRepository {
+
+    private fun String.normalizeEmail(): String = trim().lowercase()
 
     override suspend fun login(
         email: String,
@@ -31,6 +33,7 @@ class RoomAuthRepository(
 
     override suspend fun register(
         email: String,
+        username: String,
         password: String
     ): EmptyResult<DataError.Local> {
         val normalizedEmail = email.normalizeEmail()
@@ -39,6 +42,7 @@ class RoomAuthRepository(
         }
         val user = UserEntity(
             email = normalizedEmail,
+            username = username.trim(),
             passwordHash = passwordHasher.hash(password)
         )
         try {
@@ -51,6 +55,4 @@ class RoomAuthRepository(
         sessionStorage.set(user.toAuthInfo())
         return Result.Success(Unit)
     }
-
-    private fun String.normalizeEmail(): String = trim().lowercase()
 }

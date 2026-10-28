@@ -5,5 +5,5 @@ import com.kiras.core.domain.util.EmptyResult
 
 interface AuthRepository {
     suspend fun login(email: String, password: String): EmptyResult<DataError.Local>
-    suspend fun register(email: String, password: String): EmptyResult<DataError.Local>
+    suspend fun register(email: String, username: String, password: String): EmptyResult<DataError.Local>
 }
