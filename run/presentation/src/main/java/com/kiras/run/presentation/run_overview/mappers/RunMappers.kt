@@ -23,6 +23,7 @@ fun Run.toRunUi(): RunUi {
         id = id!!,
         duration = duration.formatted(),
         dateTime = formattedDateTime,
+        localDateTime = dateTimeInLocalTime,
         distance = distanceKm.toFormattedKm(),
         avgSpeed = avgSpeedKmh.toFormattedKmh(),
         maxSpeed = maxSpeedKmh.toFormattedKmh(),

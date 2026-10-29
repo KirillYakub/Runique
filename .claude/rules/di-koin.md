@@ -9,5 +9,5 @@
   - DAOs: `single { get<RunDatabase>().xDao }`
 - Register data-layer classes in their own data module's Koin module, never in presentation.
 - `appModule` (in `:app`) only provides app-wide objects (`SharedPreferences`, the application `CoroutineScope`, `MainViewModel`).
-- Every module is added to `startKoin { modules(...) }` in `RuniqueApp`.
+- Every module is added to `startKoin { modules(...) }` in `SplitlineApp`.
 - In composables, get ViewModels with `org.koin.compose.viewmodel.koinViewModel` only.

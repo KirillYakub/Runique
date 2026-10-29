@@ -33,7 +33,7 @@ playServicesMaps = "19.2.0"
 annotation = "1.9.1"
 
 # Project versions
-projectApplicationId = "com.kiras.runique"
+projectApplicationId = "com.kiras.splitline"
 projectVersionName = "1.0"
 projectMinSdkVersion = "26"
 projectTargetSdkVersion = "36"
@@ -101,13 +101,13 @@ room = { id = "androidx.room", version.ref = "room" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
 mapsplatform-secrets-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsPlugin"}
 
-runique-android-application = { id = "runique.android.application", version = "unspecified" }
-runique-android-application-compose = { id = "runique.android.application.compose", version = "unspecified" }
-runique-android-library = { id = "runique.android.library", version = "unspecified" }
-runique-android-library-compose = { id = "runique.android.library.compose", version = "unspecified" }
-runique-android-feature-ui = { id = "runique.android.feature.ui", version = "unspecified" }
-runique-android-room = { id = "runique.android.room", version = "unspecified" }
-runique-jvm-library = { id = "runique.jvm.library", version = "unspecified" }
+splitline-android-application = { id = "splitline.android.application", version = "unspecified" }
+splitline-android-application-compose = { id = "splitline.android.application.compose", version = "unspecified" }
+splitline-android-library = { id = "splitline.android.library", version = "unspecified" }
+splitline-android-library-compose = { id = "splitline.android.library.compose", version = "unspecified" }
+splitline-android-feature-ui = { id = "splitline.android.feature.ui", version = "unspecified" }
+splitline-android-room = { id = "splitline.android.room", version = "unspecified" }
+splitline-jvm-library = { id = "splitline.jvm.library", version = "unspecified" }
 
 [bundles]
 compose = [

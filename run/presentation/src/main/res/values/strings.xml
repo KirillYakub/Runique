@@ -24,11 +24,15 @@
     <string name="delete">Delete</string>
     <string name="no_completed_runs_found">No completed runs found</string>
     <string name="move_was_not_started_for_save">You need to move at least once to save the run</string>
-    <string name="runique">Runique</string>
-    <string name="analytics">Analytics</string>
+    <string name="splitline">Splitline</string>
     <string name="logout">Log out</string>
     <string name="good_morning">Good morning, %1$s</string>
     <string name="good_afternoon">Good afternoon, %1$s</string>
     <string name="good_evening">Good evening, %1$s</string>
     <string name="account">Account</string>
+    <string name="last_run">Last run</string>
+    <string name="today_at">Today · %1$s</string>
+    <string name="yesterday_at">Yesterday · %1$s</string>
+    <string name="see_all_runs">See all runs</string>
+    <string name="all_runs">All runs</string>
 </resources>

@@ -9,7 +9,7 @@ import org.gradle.kotlin.dsl.getByType
 class AndroidFeatureUiConventionPlugin: Plugin<Project> {
     override fun apply(target: Project) {
         target.run {
-            pluginManager.apply("runique.android.library.compose")
+            pluginManager.apply("splitline.android.library.compose")
 
             dependencies {
                 addUiLayerDependency(target)

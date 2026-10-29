@@ -6,8 +6,8 @@ Work goes step by step: implement one step, then stop and wait for the next comm
 
 ## Context
 `RunOverviewScreen` (`run/presentation/.../run_overview/`) is the app's home screen. Right now it is a
-`RuniqueToolbar` (logo + Analytics/Logout menu), a `LazyColumn` of `RunListItem`s and a round
-`RuniqueFloatingActionButton`. We redesign it to match the Figma Home frame. Before implementing,
+`SplitlineToolbar` (logo + Analytics/Logout menu), a `LazyColumn` of `RunListItem`s and a round
+`SplitlineFloatingActionButton`. We redesign it to match the Figma Home frame. Before implementing,
 pull exact colors, typography and spacing with `get_design_context` on these nodes:
 header `1:7`, Last run `1:28`, Start run `1:81`.
 
@@ -25,7 +25,7 @@ and a 44dp circular avatar with the user's initial.
 
 1.2 **Register screen collects the username**
 - `RegisterState`: add a `username: TextFieldState`. Add a field to `RegisterScreen` using
-  `RuniqueTextField`, plus a string in `auth/presentation` `strings.xml`.
+  `SplitlineTextField`, plus a string in `auth/presentation` `strings.xml`.
 - `AuthRepository.register(...)` and `RoomAuthRepository` take `username` and save it into `UserEntity`.
 
 1.3 **Read the username from the session and the database**
@@ -49,7 +49,7 @@ and a 44dp circular avatar with the user's initial.
   Logout keeps the current flow (`OnLogOutClick` → `sessionStorage.set(null)` + `onLogoutClick()`).
   Analytics keeps `OnAnalyticsClick` → `onAnalyticsClick()`.
 - Actions: `OnAccountClick` and `OnAccountMenuDismiss`. Keep `OnLogOutClick` and `OnAnalyticsClick`.
-- Remove `RuniqueToolbar` and the `topAppBar`/`scrollBehavior` from `RunOverviewScreen`.
+- Remove `SplitlineToolbar` and the `topAppBar`/`scrollBehavior` from `RunOverviewScreen`.
   The header becomes the first item of the scrollable content.
 
 ## Step 2: Skip "Weekly goal". Add the "Last run" card directly below the header
@@ -82,7 +82,7 @@ Figma node `1:81`: a 160×60 lime pill with a play icon and "Start run", floatin
   text in `onPrimary`, a rounded shape and shadow from the design.
 - Reuse the play/start icon from the design system if one exists. Otherwise add one to
   `core/presentation/designsystem` icons.
-- Put it in `RuniqueScaffold.floatingActionButton` in place of `RuniqueFloatingActionButton(RunIcon)`.
+- Put it in `SplitlineScaffold.floatingActionButton` in place of `SplitlineFloatingActionButton(RunIcon)`.
   It still sends `OnStartClick`.
 - Hide it while the All runs overlay is open (decide during implementation).
 

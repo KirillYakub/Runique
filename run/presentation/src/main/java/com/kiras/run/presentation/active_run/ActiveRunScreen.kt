@@ -1,6 +1,7 @@
 package com.kiras.run.presentation.active_run
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
@@ -20,15 +21,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kiras.core.presentation.designsystem.RuniqueTheme
+import com.kiras.core.presentation.designsystem.SplitlineTheme
 import com.kiras.core.presentation.designsystem.StartIcon
 import com.kiras.core.presentation.designsystem.StopIcon
-import com.kiras.core.presentation.designsystem.components.RuniqueActionButton
-import com.kiras.core.presentation.designsystem.components.RuniqueDialog
-import com.kiras.core.presentation.designsystem.components.RuniqueFloatingActionButton
-import com.kiras.core.presentation.designsystem.components.RuniqueOutlinedActionButton
-import com.kiras.core.presentation.designsystem.components.RuniqueScaffold
-import com.kiras.core.presentation.designsystem.components.RuniqueToolbar
+import com.kiras.core.presentation.designsystem.components.SplitlineActionButton
+import com.kiras.core.presentation.designsystem.components.SplitlineDialog
+import com.kiras.core.presentation.designsystem.components.SplitlineFloatingActionButton
+import com.kiras.core.presentation.designsystem.components.SplitlineOutlinedActionButton
+import com.kiras.core.presentation.designsystem.components.SplitlineScaffold
+import com.kiras.core.presentation.designsystem.components.SplitlineToolbar
 import com.kiras.core.presentation.ui.ObserveAsEvents
 import com.kiras.run.presentation.R
 import com.kiras.run.presentation.active_run.components.RunDataCard
@@ -41,6 +42,7 @@ import com.kiras.run.presentation.util.shouldShowNotificationPermissionRationale
 import org.koin.compose.viewmodel.koinViewModel
 import java.io.ByteArrayOutputStream
 
+@SuppressLint("LocalContextGetResourceValueCall")
 @Composable
 fun ActiveRunScreenRoot(
     onBack: () -> Unit,
@@ -144,7 +146,7 @@ private fun ActiveRunScreen(
             )
         )
         if(!showLocationRationale && !showNotificationRationale) {
-            permissionLauncher.requestRuniquePermissions(context)
+            permissionLauncher.requestSplitlinePermissions(context)
         }
     }
 
@@ -159,10 +161,9 @@ private fun ActiveRunScreen(
         }
     }
 
-    RuniqueScaffold(
-        withGradient = false,
+    SplitlineScaffold(
         topAppBar = {
-            RuniqueToolbar(
+            SplitlineToolbar(
                 showBackButton = true,
                 title = stringResource(R.string.active_run),
                 onBackClick = {
@@ -171,7 +172,7 @@ private fun ActiveRunScreen(
             )
         },
         floatingActionButton = {
-            RuniqueFloatingActionButton(
+            SplitlineFloatingActionButton(
                 icon = if(state.shouldTrack) StopIcon else StartIcon,
                 onClick = {
                     onAction(ActiveRunAction.OnToggleRunClick)
@@ -210,12 +211,12 @@ private fun ActiveRunScreen(
     }
 
     if(!state.shouldTrack && state.hasStartedRunning) {
-        RuniqueDialog(
+        SplitlineDialog(
             title = stringResource(R.string.running_is_paused),
             onDismiss = { onAction(ActiveRunAction.OnResumeRunClick) },
             description = stringResource(R.string.do_you_want_to_resume_or_finish_the_workout),
             primaryButton = {
-                RuniqueActionButton(
+                SplitlineActionButton(
                     text = stringResource(R.string.resume),
                     isLoading = false,
                     onClick = { onAction(ActiveRunAction.OnResumeRunClick) },
@@ -223,7 +224,7 @@ private fun ActiveRunScreen(
                 )
             },
             secondaryButton = {
-                RuniqueOutlinedActionButton(
+                SplitlineOutlinedActionButton(
                     text = stringResource(R.string.finish),
                     isLoading = state.isSavingRun,
                     onClick = { onAction(ActiveRunAction.OnFinishRunClick) },
@@ -234,7 +235,7 @@ private fun ActiveRunScreen(
     }
 
     if(state.showLocationPermissionRationale || state.showNotificationPermissionRationale) {
-        RuniqueDialog(
+        SplitlineDialog(
             title = stringResource(R.string.permission_required_title),
             onDismiss = { },
             description = when {
@@ -249,12 +250,12 @@ private fun ActiveRunScreen(
                 }
             },
             primaryButton = {
-                RuniqueOutlinedActionButton(
+                SplitlineOutlinedActionButton(
                     text = stringResource(R.string.okay),
                     isLoading = false,
                     onClick = {
                         onAction(ActiveRunAction.OnDismissRationaleDialog)
-                        permissionLauncher.requestRuniquePermissions(context)
+                        permissionLauncher.requestSplitlinePermissions(context)
                     }
                 )
             }
@@ -262,7 +263,7 @@ private fun ActiveRunScreen(
     }
 }
 
-private fun ActivityResultLauncher<Array<String>>.requestRuniquePermissions(
+private fun ActivityResultLauncher<Array<String>>.requestSplitlinePermissions(
     context: Context
 ) {
     val hasLocationPermission = context.hasLocationPermission()
@@ -293,7 +294,7 @@ private fun ActivityResultLauncher<Array<String>>.requestRuniquePermissions(
 @Preview
 @Composable
 private fun ActiveRunScreenPreview() {
-    RuniqueTheme {
+    SplitlineTheme {
         ActiveRunScreen(
             state = ActiveRunState(),
             onServiceToggle = {},

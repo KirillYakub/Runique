@@ -4,9 +4,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.graphics.ColorUtils
 import com.kiras.core.domain.location.LocationTimestamp
-import com.kiras.core.presentation.designsystem.RuniqueDarkRed
-import com.kiras.core.presentation.designsystem.RuniqueGreen
-import com.kiras.core.presentation.designsystem.RuniqueOrange
+import com.kiras.core.presentation.designsystem.SplitlineDarkRed
+import com.kiras.core.presentation.designsystem.SplitlineGreen
+import com.kiras.core.presentation.designsystem.SplitlineOrange
 import kotlin.math.abs
 
 object PolylineColorCalculator {
@@ -20,9 +20,9 @@ object PolylineColorCalculator {
             speedKmh = speedKmh,
             minSpeed = 5.0,
             maxSpeed = 20.0,
-            colorStart = RuniqueGreen,
-            colorMid = RuniqueOrange,
-            colorEnd = RuniqueDarkRed
+            colorStart = SplitlineGreen,
+            colorMid = SplitlineOrange,
+            colorEnd = SplitlineDarkRed
         )
     }
 

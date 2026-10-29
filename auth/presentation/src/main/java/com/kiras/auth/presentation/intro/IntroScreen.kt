@@ -16,11 +16,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kiras.auth.presentation.R
-import com.kiras.auth.presentation.intro.components.RuniqueLogoVertical
-import com.kiras.core.presentation.designsystem.RuniqueTheme
-import com.kiras.core.presentation.designsystem.components.GradientBackground
-import com.kiras.core.presentation.designsystem.components.RuniqueActionButton
-import com.kiras.core.presentation.designsystem.components.RuniqueOutlinedActionButton
+import com.kiras.auth.presentation.intro.components.SplitlineLogoVertical
+import com.kiras.core.presentation.designsystem.SplitlineTheme
+import com.kiras.core.presentation.designsystem.components.SplitlineActionButton
+import com.kiras.core.presentation.designsystem.components.SplitlineOutlinedActionButton
+import com.kiras.core.presentation.designsystem.components.SplitlineScaffold
 
 @Composable
 fun IntroScreenRoot(
@@ -39,45 +39,51 @@ fun IntroScreenRoot(
 
 @Composable
 private fun IntroScreen(onAction: (IntroAction) -> Unit) {
-    GradientBackground {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            contentAlignment = Alignment.Center
-        ) {
-            RuniqueLogoVertical()
-        }
+    SplitlineScaffold { padding ->
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .padding(bottom = 48.dp)
+                .fillMaxSize()
+                .padding(padding)
         ) {
-            Text(
-                text = stringResource(R.string.welcome_to_runique),
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(R.string.runique_description),
-                style = MaterialTheme.typography.bodySmall
-            )
-            Spacer(modifier = Modifier.height(32.dp))
-            RuniqueOutlinedActionButton(
-                text = stringResource(R.string.sign_in),
-                isLoading = false,
-                modifier = Modifier.fillMaxWidth(),
-                onClick = { onAction(IntroAction.OnSignInClick) }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            RuniqueActionButton(
-                text = stringResource(R.string.sign_up),
-                isLoading = false,
-                modifier = Modifier.fillMaxWidth(),
-                onClick = { onAction(IntroAction.OnSignUpClick) }
-            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                contentAlignment = Alignment.Center
+            ) {
+                SplitlineLogoVertical()
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .padding(bottom = 48.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.welcome_to_splitline),
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = stringResource(R.string.splitline_description),
+                    style = MaterialTheme.typography.bodySmall
+                )
+                Spacer(modifier = Modifier.height(32.dp))
+                SplitlineOutlinedActionButton(
+                    text = stringResource(R.string.sign_in),
+                    isLoading = false,
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { onAction(IntroAction.OnSignInClick) }
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                SplitlineActionButton(
+                    text = stringResource(R.string.sign_up),
+                    isLoading = false,
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { onAction(IntroAction.OnSignUpClick) }
+                )
+            }
         }
     }
 }
@@ -85,7 +91,7 @@ private fun IntroScreen(onAction: (IntroAction) -> Unit) {
 @Preview
 @Composable
 private fun IntroScreenPreview() {
-    RuniqueTheme {
+    SplitlineTheme {
         IntroScreen {  }
     }
 }

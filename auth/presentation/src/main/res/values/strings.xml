@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="runique">Runique</string>
-    <string name="welcome_to_runique">Welcome to Runique!</string>
-    <string name="runique_description">Track your runs, set goals and achieve fitness milestones with our intuitive app.</string>
+    <string name="splitline">Splitline</string>
+    <string name="welcome_to_splitline">Welcome to Splitline!</string>
+    <string name="splitline_description">Track your runs, set goals and achieve fitness milestones with our intuitive app.</string>
     <string name="sign_up">Sign up</string>
     <string name="sign_in">Sign in</string>
     <string name="create_account">Create Account</string>
@@ -19,9 +19,9 @@
     <string name="lower_case">Contains lowercase character</string>
     <string name="upper_case">Contains uppercase character</string>
     <string name="register">Register</string>
-    <string name="registration_success">Registration successful! Welcome to Runique</string>
+    <string name="registration_success">Registration successful! Welcome to Splitline</string>
     <string name="hi_there">Hi there!</string>
-    <string name="runique_welcome_text">Welcome to your ultimate running companion! Track, analyze and conquer your runs.</string>
+    <string name="splitline_welcome_text">Welcome to your ultimate running companion! Track, analyze and conquer your runs.</string>
     <string name="do_not_have_an_account">Do not have an account?</string>
     <string name="login_success">Login success!</string>
 </resources>

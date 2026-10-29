@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.runique.android.library)
+    alias(libs.plugins.splitline.android.library)
 }
 
 android {
@@ -15,4 +15,5 @@ dependencies {
 
     implementation(projects.core.domain)
     implementation(projects.run.domain)
+    testImplementation(kotlin("test"))
 }

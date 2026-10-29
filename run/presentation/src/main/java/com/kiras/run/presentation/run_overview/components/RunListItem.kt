@@ -11,14 +11,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -39,12 +37,11 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.SubcomposeAsyncImage
 import com.kiras.core.domain.location.Location
 import com.kiras.core.domain.run.Run
 import com.kiras.core.presentation.designsystem.CalendarIcon
 import com.kiras.core.presentation.designsystem.RunOutlinedIcon
-import com.kiras.core.presentation.designsystem.RuniqueTheme
+import com.kiras.core.presentation.designsystem.SplitlineTheme
 import com.kiras.core.presentation.designsystem.components.util.DropDownItem
 import com.kiras.run.presentation.R
 import com.kiras.run.presentation.run_overview.mappers.toRunUi
@@ -73,7 +70,12 @@ fun RunListItem(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            MapImage(imageUrl = runUi.mapPictureUrl)
+            MapImage(
+                imageUrl = runUi.mapPictureUrl,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(16 / 9f)
+            )
             RunningTimeSection(
                 duration = runUi.duration,
                 modifier = Modifier.fillMaxWidth()
@@ -173,47 +175,6 @@ fun DataGrid(
 }
 
 @Composable
-private fun MapImage(
-    imageUrl: String?,
-    modifier: Modifier = Modifier
-) {
-    SubcomposeAsyncImage(
-        model = imageUrl,
-        contentDescription = stringResource(R.string.run_map),
-        modifier = modifier
-            .fillMaxWidth()
-            .aspectRatio(16 / 9f)
-            .clip(RoundedCornerShape(15.dp)),
-        loading = {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(20.dp),
-                    strokeWidth = 2.dp,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-            }
-        },
-        error = {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.errorContainer),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(R.string.could_not_load_image),
-                    color = MaterialTheme.colorScheme.error
-                )
-            }
-        }
-    )
-}
-
-@Composable
 fun RunningTimeSection(
     duration: String,
     modifier: Modifier = Modifier
@@ -283,7 +244,7 @@ private fun DataGridCell(
 @Preview
 @Composable
 private fun RunListPreview() {
-    RuniqueTheme {
+    SplitlineTheme {
         RunListItem(
             runUi = Run(
                 id = "123",

@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kiras.core.presentation.designsystem.RuniqueTheme
+import com.kiras.core.presentation.designsystem.SplitlineTheme
 import com.kiras.core.presentation.ui.formatted
 import com.kiras.core.presentation.ui.toFormattedKm
 import com.kiras.core.presentation.ui.toFormattedPace
@@ -96,7 +96,7 @@ private fun RunDataItem(
 @Preview
 @Composable
 private fun RunDataCardPreview() {
-    RuniqueTheme {
+    SplitlineTheme {
         RunDataCard(
             elapsedTime = 10.minutes,
             runData = RunData(

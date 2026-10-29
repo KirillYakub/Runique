@@ -1,12 +1,12 @@
 plugins {
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.runique.android.application)
-    alias(libs.plugins.runique.android.application.compose)
+    alias(libs.plugins.splitline.android.application)
+    alias(libs.plugins.splitline.android.application.compose)
     alias(libs.plugins.mapsplatform.secrets.plugin)
 }
 
 android {
-    namespace = "com.kiras.runique"
+    namespace = "com.kiras.splitline"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -68,7 +68,7 @@ dependencies {
     implementation(projects.run.domain)
     implementation(projects.run.location)
 
-    implementation(projects.analytics.presentation)
-    implementation(projects.analytics.domain)
-    implementation(projects.analytics.data)
+    implementation(projects.statistics.presentation)
+    implementation(projects.statistics.domain)
+    implementation(projects.statistics.data)
 }

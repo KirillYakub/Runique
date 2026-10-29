@@ -1,6 +1,6 @@
 # Data layer
 
-- Name repository implementations `<Interface>Impl`: `AuthRepositoryImpl`, `AnalyticsRepositoryImpl`. Name other implementations of domain interfaces `<Technology><Interface>`: `RoomLocalRunDataSource`, `EncryptedSessionStorage`, `AndroidLocationObserver`. Do not use a `Default` prefix.
+- Name repository implementations `<Interface>Impl`: `AuthRepositoryImpl`, `StatisticsRepositoryImpl`. Name other implementations of domain interfaces `<Technology><Interface>`: `RoomLocalRunDataSource`, `EncryptedSessionStorage`, `AndroidLocationObserver`. Do not use a `Default` prefix.
 - Expose implementations through the module's Koin module bound to the domain interface. Do not mark them `internal` (see code-style rule).
 - Room:
   - Entities go in `:core:database` `entity/` (`XEntity`), DAOs in `dao/` (`XDao`), the database in `RunDatabase`.

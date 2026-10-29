@@ -1,7 +1,7 @@
 plugins {
     `kotlin-dsl`
 }
-group = "com.kiras.runique.buildlogic"
+group = "com.kiras.splitline.buildlogic"
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
@@ -21,31 +21,31 @@ dependencies {
 gradlePlugin {
     plugins {
         register("android-application") {
-            id = "runique.android.application"
+            id = "splitline.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
         register("android-application-compose") {
-            id = "runique.android.application.compose"
+            id = "splitline.android.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
         register("android-library") {
-            id = "runique.android.library"
+            id = "splitline.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
         register("android-library-compose") {
-            id = "runique.android.library.compose"
+            id = "splitline.android.library.compose"
             implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
         register("android-feature-ui") {
-            id = "runique.android.feature.ui"
+            id = "splitline.android.feature.ui"
             implementationClass = "AndroidFeatureUiConventionPlugin"
         }
         register("androidRoom") {
-            id = "runique.android.room"
+            id = "splitline.android.room"
             implementationClass = "AndroidRoomConventionPlugin"
         }
         register("jvmLibrary") {
-            id = "runique.jvm.library"
+            id = "splitline.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
         }
     }

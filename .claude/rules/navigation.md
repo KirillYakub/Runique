@@ -9,4 +9,4 @@
   - `app/NavigationRoot` holds the `NavHost` and every nested graph: `navigation<XGraphRoute>(startDestination = …) { composable<XRoute> { XScreenRoot(...) } }`, using the routes and `XScreenRoot`s exported by the features.
   - Cross-feature navigation is done in `NavigationRoot` by passing lambdas to `XScreenRoot`. Features never import each other's routes.
 - Screens never receive `NavController`. `XScreenRoot` only gets lambdas such as `onLoginSuccess`, `onBackClick`.
-- Deep links (for example `runique://active_run`) are declared on `composable<Route>(deepLinks = …)` in `NavigationRoot`.
+- Deep links (for example `splitline://active_run`) are declared on `composable<Route>(deepLinks = …)` in `NavigationRoot`.

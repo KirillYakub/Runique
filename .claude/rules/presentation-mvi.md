@@ -12,7 +12,7 @@
   - `XScreen.kt` containing:
     - a public `XScreenRoot(...)` that takes navigation lambdas and `viewModel: XViewModel = koinViewModel()` and handles events with `ObserveAsEvents`
     - a `private fun XScreen(state, onAction)` that is stateless
-    - a `private` `@Preview` wrapped in `RuniqueTheme`.
+    - a `private` `@Preview` wrapped in `SplitlineTheme`.
 - Screen subpackages, only when needed:
   - `components/`: local composables (see compose-components rule)
   - `model/`: UI models with the `Ui` suffix (`RunUi`)

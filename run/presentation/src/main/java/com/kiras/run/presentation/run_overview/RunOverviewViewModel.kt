@@ -28,7 +28,10 @@ class RunOverviewViewModel(
     init {
         runRepository.getRuns().onEach { runs ->
             val runsUi = runs.map { it.toRunUi() }
-            state = state.copy(runs = runsUi)
+            state = state.copy(
+                runs = runsUi,
+                lastRun = runsUi.firstOrNull()
+            )
         }.launchIn(viewModelScope)
 
         loadUsername()
@@ -44,15 +47,21 @@ class RunOverviewViewModel(
             RunOverviewAction.OnAccountClick -> {
                 state = state.copy(isAccountMenuOpen = true)
             }
-            RunOverviewAction.OnAccountMenuDismiss,
-            RunOverviewAction.OnAnalyticsClick -> {
+            RunOverviewAction.OnAccountMenuDismiss -> {
                 state = state.copy(isAccountMenuOpen = false)
             }
             RunOverviewAction.OnLogOutClick -> {
                 state = state.copy(isAccountMenuOpen = false)
                 logout()
             }
-            RunOverviewAction.OnStartClick -> Unit
+            RunOverviewAction.OnSeeAllRunsClick -> {
+                state = state.copy(isAllRunsOpen = true)
+            }
+            RunOverviewAction.OnAllRunsBackClick -> {
+                state = state.copy(isAllRunsOpen = false)
+            }
+            RunOverviewAction.OnStartClick,
+            RunOverviewAction.OnStatisticsClick -> Unit
         }
     }
 

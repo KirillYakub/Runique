@@ -28,9 +28,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kiras.core.presentation.designsystem.AnalyticsIcon
 import com.kiras.core.presentation.designsystem.LogoutIcon
-import com.kiras.core.presentation.designsystem.RuniqueTheme
+import com.kiras.core.presentation.designsystem.SplitlineTheme
 import com.kiras.run.presentation.R
 
 @Composable
@@ -41,7 +40,6 @@ fun HomeHeader(
     isAccountMenuOpen: Boolean,
     onAccountClick: () -> Unit,
     onAccountMenuDismiss: () -> Unit,
-    onAnalyticsClick: () -> Unit,
     onLogoutClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -90,16 +88,6 @@ fun HomeHeader(
                 onDismissRequest = onAccountMenuDismiss
             ) {
                 DropdownMenuItem(
-                    text = { Text(text = stringResource(R.string.analytics)) },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = AnalyticsIcon,
-                            contentDescription = null
-                        )
-                    },
-                    onClick = onAnalyticsClick
-                )
-                DropdownMenuItem(
                     text = { Text(text = stringResource(R.string.logout)) },
                     leadingIcon = {
                         Icon(
@@ -117,7 +105,7 @@ fun HomeHeader(
 @Preview
 @Composable
 private fun HomeHeaderPreview() {
-    RuniqueTheme {
+    SplitlineTheme {
         HomeHeader(
             date = "Tuesday, 21 Oct",
             greeting = "Good morning, Kyrylo",
@@ -125,7 +113,6 @@ private fun HomeHeaderPreview() {
             isAccountMenuOpen = false,
             onAccountClick = {},
             onAccountMenuDismiss = {},
-            onAnalyticsClick = {},
             onLogoutClick = {}
         )
     }

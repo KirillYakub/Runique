@@ -9,31 +9,31 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 val DarkColorScheme = darkColorScheme(
-    primary = RuniqueGreen,
-    background = RuniqueBlack,
-    surface = RuniqueDarkGray,
-    surfaceVariant = RuniqueSurfaceElevated,
-    surfaceContainerLowest = RuniqueSurfaceSecondary,
-    surfaceContainerLow = RuniqueSurfaceSecondary,
-    surfaceContainer = RuniqueDarkGray,
-    surfaceContainerHigh = RuniqueSurfaceElevated,
-    surfaceContainerHighest = RuniqueSurfaceSubtle,
-    secondary = RuniqueBlue,
-    tertiary = RuniqueOrange,
-    primaryContainer = RuniqueGreenDark,
-    onPrimaryContainer = RuniqueGreen,
-    onPrimary = RuniqueBlack,
-    onBackground = RuniqueWhite,
-    onSurface = RuniqueWhite,
-    onSurfaceVariant = RuniqueGray,
-    outline = RuniqueBorder,
-    outlineVariant = RuniqueBorder,
-    error = RuniqueDarkRed,
-    errorContainer = RuniqueDarkRed5
+    primary = SplitlineGreen,
+    background = SplitlineBlack,
+    surface = SplitlineDarkGray,
+    surfaceVariant = SplitlineSurfaceElevated,
+    surfaceContainerLowest = SplitlineSurfaceSecondary,
+    surfaceContainerLow = SplitlineSurfaceSecondary,
+    surfaceContainer = SplitlineDarkGray,
+    surfaceContainerHigh = SplitlineSurfaceElevated,
+    surfaceContainerHighest = SplitlineSurfaceSubtle,
+    secondary = SplitlineBlue,
+    tertiary = SplitlineOrange,
+    primaryContainer = SplitlineGreenDark,
+    onPrimaryContainer = SplitlineGreen,
+    onPrimary = SplitlineBlack,
+    onBackground = SplitlineWhite,
+    onSurface = SplitlineWhite,
+    onSurfaceVariant = SplitlineGray,
+    outline = SplitlineBorder,
+    outlineVariant = SplitlineBorder,
+    error = SplitlineDarkRed,
+    errorContainer = SplitlineDarkRed5
 )
 
 @Composable
-fun RuniqueTheme(
+fun SplitlineTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = DarkColorScheme

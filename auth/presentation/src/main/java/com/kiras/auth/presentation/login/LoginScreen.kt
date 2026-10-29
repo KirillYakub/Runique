@@ -30,11 +30,11 @@ import androidx.compose.ui.unit.dp
 import com.kiras.core.presentation.designsystem.EmailIcon
 import com.kiras.core.presentation.designsystem.Poppins
 import com.kiras.auth.presentation.R
-import com.kiras.core.presentation.designsystem.RuniqueTheme
-import com.kiras.core.presentation.designsystem.components.GradientBackground
-import com.kiras.core.presentation.designsystem.components.RuniqueActionButton
-import com.kiras.core.presentation.designsystem.components.RuniquePasswordTextField
-import com.kiras.core.presentation.designsystem.components.RuniqueTextField
+import com.kiras.core.presentation.designsystem.SplitlineTheme
+import com.kiras.core.presentation.designsystem.components.SplitlineActionButton
+import com.kiras.core.presentation.designsystem.components.SplitlinePasswordTextField
+import com.kiras.core.presentation.designsystem.components.SplitlineScaffold
+import com.kiras.core.presentation.designsystem.components.SplitlineTextField
 import com.kiras.core.presentation.ui.ObserveAsEvents
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -75,10 +75,11 @@ private fun LoginScreen(
     state: LoginState,
     onAction: (LoginAction) -> Unit,
 ) {
-    GradientBackground {
+    SplitlineScaffold { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(padding)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp)
                 .padding(vertical = 32.dp)
@@ -90,12 +91,12 @@ private fun LoginScreen(
                 style = MaterialTheme.typography.headlineMedium
             )
             Text(
-                text = stringResource(id = R.string.runique_welcome_text),
+                text = stringResource(id = R.string.splitline_welcome_text),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Spacer(modifier = Modifier.height(48.dp))
-            RuniqueTextField(
+            SplitlineTextField(
                 state = state.email,
                 startIcon = EmailIcon,
                 endIcon = null,
@@ -104,7 +105,7 @@ private fun LoginScreen(
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(16.dp))
-            RuniquePasswordTextField(
+            SplitlinePasswordTextField(
                 state = state.password,
                 isPasswordVisible = state.isPasswordVisible,
                 onTogglePasswordVisibility = {
@@ -115,7 +116,7 @@ private fun LoginScreen(
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(32.dp))
-            RuniqueActionButton(
+            SplitlineActionButton(
                 text = stringResource(id = R.string.login),
                 isLoading = state.isLoggingIn,
                 enabled = state.canLogin && !state.isLoggingIn,
@@ -168,7 +169,7 @@ private fun LoginScreen(
 @Preview
 @Composable
 private fun LoginScreenPreview() {
-    RuniqueTheme {
+    SplitlineTheme {
         LoginScreen(LoginState()) { }
     }
 }

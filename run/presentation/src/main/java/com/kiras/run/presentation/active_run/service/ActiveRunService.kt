@@ -62,7 +62,7 @@ class ActiveRunService: Service() {
             createNotificationChannel()
 
             val activityIntent = Intent(applicationContext, activityClass).apply {
-                data = "runique://active_run".toUri()
+                data = "splitline://active_run".toUri()
                 flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
             }
             val pendingIntent = PendingIntent.getActivity(
