@@ -22,7 +22,7 @@ dependencyResolutionManagement {
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-rootProject.name = "Runique"
+rootProject.name = "Splitline"
 include(":app")
 include(":auth:data")
 include(":auth:domain")
@@ -33,8 +33,10 @@ include(":core:domain")
 include(":core:data")
 include(":core:database")
 include(":run:domain")
+include(":run:data")
 include(":run:presentation")
 include(":run:location")
-include(":analytics:data")
-include(":analytics:domain")
-include(":analytics:presentation")
+include(":statistics:data")
+include(":statistics:domain")
+include(":statistics:presentation")
+include(":settings:presentation")

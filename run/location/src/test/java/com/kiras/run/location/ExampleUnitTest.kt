@@ -1,7 +1,6 @@
 package com.kiras.run.location
 
 import org.junit.Test
-
 import org.junit.Assert.*
 
 /**

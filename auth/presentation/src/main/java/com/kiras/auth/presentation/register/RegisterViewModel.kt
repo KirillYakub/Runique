@@ -30,20 +30,19 @@ class RegisterViewModel(
     val events = eventChannel.receiveAsFlow()
 
     init {
+        state.username.textAsFlow().onEach { username ->
+            state = state.copy(isUsernameValid = username.isNotBlank())
+            updateCanRegister()
+        }.launchIn(viewModelScope)
+
         state.email.textAsFlow().onEach { email ->
-            val isEmailValid = validateEmail(email.toString())
-            state = state.copy(
-                isEmailValid = isEmailValid,
-                canRegister = isEmailValid && state.passwordValidationState.isValidPassword && !state.isRegistering
-            )
+            state = state.copy(isEmailValid = validateEmail(email.toString()))
+            updateCanRegister()
         }.launchIn(viewModelScope)
 
         state.password.textAsFlow().onEach { password ->
-            val passwordValidationState = validatePassword(password.toString())
-            state = state.copy(
-                passwordValidationState = passwordValidationState,
-                canRegister = state.isEmailValid && passwordValidationState.isValidPassword && !state.isRegistering
-            )
+            state = state.copy(passwordValidationState = validatePassword(password.toString()))
+            updateCanRegister()
         }.launchIn(viewModelScope)
     }
 
@@ -60,11 +59,21 @@ class RegisterViewModel(
         }
     }
 
+    private fun updateCanRegister() {
+        state = state.copy(
+            canRegister = state.isUsernameValid &&
+                    state.isEmailValid &&
+                    state.passwordValidationState.isValidPassword &&
+                    !state.isRegistering
+        )
+    }
+
     private fun register() {
         viewModelScope.launch {
             state = state.copy(isRegistering = true)
             val result = authRepository.register(
                 email = state.email.text.toString().trim(),
+                username = state.username.text.toString().trim(),
                 password = state.password.text.toString()
             )
             state = state.copy(isRegistering = false)

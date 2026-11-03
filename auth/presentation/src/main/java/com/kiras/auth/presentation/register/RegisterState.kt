@@ -4,6 +4,8 @@ import androidx.compose.foundation.text.input.TextFieldState
 import com.kiras.auth.domain.PasswordValidationState
 
 data class RegisterState(
+    val username: TextFieldState = TextFieldState(),
+    val isUsernameValid: Boolean = false,
     val email: TextFieldState = TextFieldState(),
     val isEmailValid: Boolean = false,
     val password: TextFieldState = TextFieldState(),

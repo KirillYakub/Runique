@@ -16,6 +16,7 @@ sealed interface DataError: Error {
         DISC_FULL,
         CONFLICT,
         INVALID_CREDENTIALS,
-        NO_ACTIVE_SESSION
+        NO_ACTIVE_SESSION,
+        USER_NOT_FOUND
     }
 }

@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kiras.core.domain.location.Location
 import com.kiras.core.domain.run.Run
+import com.kiras.core.domain.settings.CountdownDuration
+import com.kiras.core.domain.settings.SettingsRepository
 import com.kiras.core.domain.util.Result
 import com.kiras.core.presentation.ui.asUiText
 import com.kiras.run.domain.LocationDataCalculator
@@ -15,7 +17,9 @@ import com.kiras.run.domain.RunningTracker
 import com.kiras.core.domain.run.RunRepository
 import com.kiras.run.presentation.active_run.service.ActiveRunService
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -27,10 +31,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import kotlin.time.Duration.Companion.seconds
 
 class ActiveRunViewModel(
     private val runningTracker: RunningTracker,
     private val runRepository: RunRepository,
+    private val settingsRepository: SettingsRepository,
     private val applicationScope: CoroutineScope,
 ): ViewModel() {
 
@@ -42,6 +48,8 @@ class ActiveRunViewModel(
 
     private val eventChannel = Channel<ActiveRunEvent>()
     val events = eventChannel.receiveAsFlow()
+
+    private var countdownJob: Job? = null
 
     private val shouldTrack = snapshotFlow { state.shouldTrack }
         .stateIn(viewModelScope, SharingStarted.Lazily, state.shouldTrack)
@@ -98,6 +106,18 @@ class ActiveRunViewModel(
                 )
             }
             .launchIn(viewModelScope)
+
+        settingsRepository
+            .getSettings()
+            .onEach { settings ->
+                state = state.copy(
+                    distanceUnit = settings.distanceUnit,
+                    paceFormat = settings.paceFormat,
+                    countdown = settings.countdown,
+                    keepScreenOn = settings.keepScreenOn
+                )
+            }
+            .launchIn(viewModelScope)
     }
 
     fun onAction(action: ActiveRunAction) {
@@ -119,11 +139,20 @@ class ActiveRunViewModel(
                 }
             }
             ActiveRunAction.OnToggleRunClick -> {
-                state = state.copy(
-                    hasStartedRunning = true,
-                    shouldTrack = !state.shouldTrack
-                )
+                when {
+                    countdownJob != null -> cancelCountdown()
+                    !state.hasStartedRunning && state.countdown != CountdownDuration.OFF -> {
+                        startCountdown(state.countdown.seconds)
+                    }
+                    else -> {
+                        state = state.copy(
+                            hasStartedRunning = true,
+                            shouldTrack = !state.shouldTrack
+                        )
+                    }
+                }
             }
+            ActiveRunAction.OnCancelCountdownClick -> cancelCountdown()
             is ActiveRunAction.OnSubmitLocationPermissionInfo -> {
                 hasLocationPermission.value = action.acceptedLocationPermission
                 state = state.copy(
@@ -187,6 +216,27 @@ class ActiveRunViewModel(
                 state = state.copy(isSavingRun = false)
             }
         }
+    }
+
+    private fun startCountdown(seconds: Int) {
+        countdownJob = viewModelScope.launch {
+            for(remaining in seconds downTo 1) {
+                state = state.copy(countdownRemaining = remaining)
+                delay(1.seconds)
+            }
+            countdownJob = null
+            state = state.copy(
+                countdownRemaining = null,
+                hasStartedRunning = true,
+                shouldTrack = true
+            )
+        }
+    }
+
+    private fun cancelCountdown() {
+        countdownJob?.cancel()
+        countdownJob = null
+        state = state.copy(countdownRemaining = null)
     }
 
     override fun onCleared() {

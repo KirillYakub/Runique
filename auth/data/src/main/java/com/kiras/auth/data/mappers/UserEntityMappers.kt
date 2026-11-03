@@ -4,7 +4,5 @@ import com.kiras.core.database.entity.UserEntity
 import com.kiras.core.domain.AuthInfo
 
 fun UserEntity.toAuthInfo(): AuthInfo {
-    return AuthInfo(
-        userId = userId
-    )
+    return AuthInfo(userId = userId)
 }
