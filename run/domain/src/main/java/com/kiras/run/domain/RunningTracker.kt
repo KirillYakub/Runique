@@ -2,16 +2,19 @@ package com.kiras.run.domain
 
 import com.kiras.core.domain.Timer
 import com.kiras.core.domain.location.LocationTimestamp
+import com.kiras.core.domain.settings.SettingsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combineTransform
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -23,6 +26,7 @@ import kotlin.time.Duration.Companion.seconds
 @OptIn(ExperimentalCoroutinesApi::class)
 class RunningTracker(
     private val locationObserver: LocationObserver,
+    private val settingsRepository: SettingsRepository,
     private val applicationScope: CoroutineScope
 ) {
 
@@ -40,7 +44,12 @@ class RunningTracker(
     val currentLocation = isObservingLocation
         .flatMapLatest { isObservingLocation ->
             if(isObservingLocation)
-                locationObserver.observeLocation(1000L)
+                settingsRepository.getSettings()
+                    .map { it.gpsAccuracy }
+                    .distinctUntilChanged()
+                    .flatMapLatest { accuracy ->
+                        locationObserver.observeLocation(accuracy)
+                    }
             else
                 flowOf()
         }

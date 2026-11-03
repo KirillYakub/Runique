@@ -12,4 +12,4 @@
 - I/O runs in `withContext(Dispatchers.IO)`.
 - Independent queries run in parallel with `async`.
 - Work that must finish after the screen closes runs on the injected application `CoroutineScope`.
-- Constants go in a `private companion object` and are used directly in the class, not passed in as default constructor parameters.
+- Constants follow the constants rule.

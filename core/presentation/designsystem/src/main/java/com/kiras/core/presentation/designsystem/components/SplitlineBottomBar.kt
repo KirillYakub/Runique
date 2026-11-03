@@ -78,7 +78,7 @@ private fun BottomBarItem(
     modifier: Modifier = Modifier
 ) {
     val contentColor =
-        if(isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+        if(isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
 
     Column(
         modifier = modifier

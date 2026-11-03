@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kiras.core.domain.location.Location
 import com.kiras.core.domain.run.Run
+import com.kiras.core.domain.settings.UserSettings
 import com.kiras.core.presentation.designsystem.SplitlineTheme
 import com.kiras.run.presentation.R
 import com.kiras.run.presentation.run_overview.mappers.toRunUi
@@ -77,10 +78,17 @@ fun LastRunCard(
                     name = stringResource(R.string.distance),
                     value = runUi.distance
                 ),
-                RunDataUi(
-                    name = stringResource(R.string.pace),
-                    value = runUi.pace
-                ),
+                if(runUi.pace != null) {
+                    RunDataUi(
+                        name = stringResource(R.string.pace),
+                        value = runUi.pace
+                    )
+                } else {
+                    RunDataUi(
+                        name = stringResource(R.string.speed),
+                        value = runUi.avgSpeed
+                    )
+                },
                 RunDataUi(
                     name = stringResource(R.string.duration),
                     value = runUi.duration
@@ -95,7 +103,7 @@ fun LastRunCard(
         Text(
             text = stringResource(R.string.see_all_runs),
             style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             modifier = Modifier
                 .align(Alignment.End)
                 .clickable(onClick = onSeeAllRunsClick)
@@ -142,7 +150,7 @@ private fun LastRunCardPreview() {
                 maxSpeedKmh = 14.2,
                 totalElevationMeters = 56,
                 mapPictureUrl = null
-            ).toRunUi(),
+            ).toRunUi(UserSettings()),
             date = "Yesterday · 07:12",
             onSeeAllRunsClick = {}
         )

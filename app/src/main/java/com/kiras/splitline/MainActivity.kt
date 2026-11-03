@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -12,6 +13,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.compose.rememberNavController
+import com.kiras.core.domain.settings.AppTheme
 import com.kiras.core.presentation.designsystem.SplitlineTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -33,12 +35,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen().apply {
             setKeepOnScreenCondition {
-                viewModel.state.isCheckingAuth
+                viewModel.state.isCheckingAuth || !viewModel.state.isThemeLoaded
             }
         }
         enableEdgeToEdge()
         setContent {
-            SplitlineTheme {
+            val isDarkTheme = when(viewModel.state.theme) {
+                AppTheme.SYSTEM -> isSystemInDarkTheme()
+                AppTheme.NIGHT -> true
+                AppTheme.DAY -> false
+            }
+            SplitlineTheme(isDarkTheme = isDarkTheme) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background

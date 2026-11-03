@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kiras.core.domain.location.Location
 import com.kiras.core.domain.run.Run
+import com.kiras.core.domain.settings.UserSettings
 import com.kiras.core.presentation.designsystem.SplitlineTheme
 import com.kiras.core.presentation.designsystem.components.SplitlineScaffold
 import com.kiras.core.presentation.designsystem.components.SplitlineToolbar
@@ -80,7 +81,7 @@ private fun AllRunsPagePreview() {
                     maxSpeedKmh = 12.543,
                     totalElevationMeters = 120,
                     mapPictureUrl = null
-                ).toRunUi()
+                ).toRunUi(UserSettings())
             ),
             onBackClick = {},
             onDeleteRunClick = {}

@@ -34,7 +34,6 @@ import com.kiras.core.presentation.designsystem.LogoIcon
 import com.kiras.core.presentation.designsystem.MenuIcon
 import com.kiras.core.presentation.designsystem.Poppins
 import com.kiras.core.presentation.designsystem.R
-import com.kiras.core.presentation.designsystem.SplitlineGreen
 import com.kiras.core.presentation.designsystem.StatisticsIcon
 import com.kiras.core.presentation.designsystem.components.util.DropDownItem
 
@@ -134,7 +133,7 @@ private fun SplitlineToolbarPreview() {
             Icon(
                 imageVector = LogoIcon,
                 contentDescription = null,
-                tint = SplitlineGreen,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.size(35.dp)
             )
         },

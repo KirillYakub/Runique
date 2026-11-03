@@ -26,7 +26,7 @@ fun PasswordRequirement(
         Icon(
             imageVector = if(isValid) CheckIcon else CrossIcon,
             contentDescription = null,
-            tint = if(isValid) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+            tint = if(isValid) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.error
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(

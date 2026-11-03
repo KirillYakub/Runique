@@ -5,12 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kiras.core.domain.settings.SettingsRepository
 import com.kiras.statistics.domain.StatisticsRepository
 import com.kiras.statistics.presentation.dashboard.mappers.toStatisticsDashboardState
 import kotlinx.coroutines.launch
 
 class StatisticsDashboardViewModel(
-    statisticsRepository: StatisticsRepository
+    statisticsRepository: StatisticsRepository,
+    settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     var state by mutableStateOf<StatisticsDashboardState?>(null)
@@ -18,7 +20,10 @@ class StatisticsDashboardViewModel(
 
     init {
         viewModelScope.launch {
-            state = statisticsRepository.getStatisticsValues().toStatisticsDashboardState()
+            val statisticsValues = statisticsRepository.getStatisticsValues()
+            settingsRepository.getSettings().collect { settings ->
+                state = statisticsValues.toStatisticsDashboardState(settings)
+            }
         }
     }
 }

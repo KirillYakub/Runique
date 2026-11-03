@@ -67,7 +67,8 @@ private fun IntroScreen(onAction: (IntroAction) -> Unit) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(R.string.splitline_description),
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(modifier = Modifier.height(32.dp))
                 SplitlineOutlinedActionButton(

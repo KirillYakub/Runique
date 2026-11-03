@@ -28,6 +28,10 @@ val CalendarIcon: ImageVector
     @Composable
     get() = ImageVector.vectorResource(id = R.drawable.calendar)
 
+val ChevronRightIcon: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.chevron_right)
+
 val CheckIcon: ImageVector
     @Composable
     get() = ImageVector.vectorResource(id = R.drawable.check)
@@ -35,6 +39,10 @@ val CheckIcon: ImageVector
 val CrossIcon: ImageVector
     @Composable
     get() = ImageVector.vectorResource(id = R.drawable.cross)
+
+val EditIcon: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.edit)
 
 val EmailIcon: ImageVector
     @Composable
@@ -80,6 +88,10 @@ val LogoutIcon: ImageVector
     @Composable
     get() = ImageVector.vectorResource(id = R.drawable.logout)
 
+val MinusIcon: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.minus)
+
 val PauseIcon: ImageVector
     @Composable
     get() = ImageVector.vectorResource(id = R.drawable.pause)
@@ -87,6 +99,10 @@ val PauseIcon: ImageVector
 val PlayIcon: ImageVector
     @Composable
     get() = ImageVector.vectorResource(id = R.drawable.play)
+
+val PlusIcon: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.plus)
 
 val PersonIcon: ImageVector
     @Composable
@@ -99,6 +115,10 @@ val RunOutlinedIcon: ImageVector
 val RunIcon: ImageVector
     @Composable
     get() = ImageVector.vectorResource(id = R.drawable.run)
+
+val SettingsIcon: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.settings)
 
 val StartIcon: ImageVector
     @Composable

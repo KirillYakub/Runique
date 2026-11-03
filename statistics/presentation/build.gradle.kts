@@ -11,5 +11,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
 
+    implementation(projects.core.domain)
     implementation(projects.statistics.domain)
 }

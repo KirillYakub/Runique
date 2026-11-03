@@ -1,5 +1,6 @@
 package com.kiras.run.presentation.run_overview
 
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInHorizontally
@@ -15,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,15 +25,24 @@ import com.kiras.core.presentation.designsystem.SplitlineTheme
 import com.kiras.core.presentation.designsystem.components.SplitlineBottomBar
 import com.kiras.core.presentation.designsystem.components.SplitlineScaffold
 import com.kiras.core.presentation.designsystem.components.util.BottomBarTab
+import com.kiras.core.presentation.ui.ObserveAsEvents
+import com.kiras.core.domain.settings.DistanceUnit
+import com.kiras.run.domain.goal.DailyGoalProgress
+import com.kiras.run.domain.goal.DayGoalStatus
+import com.kiras.run.domain.goal.GoalMetric
 import com.kiras.run.presentation.R
 import com.kiras.run.presentation.run_overview.components.AllRunsPage
+import com.kiras.run.presentation.run_overview.components.DailyGoalBottomSheet
+import com.kiras.run.presentation.run_overview.components.DailyGoalCard
 import com.kiras.run.presentation.run_overview.components.HomeHeader
 import com.kiras.run.presentation.run_overview.components.LastRunCard
 import com.kiras.run.presentation.run_overview.components.StartRunButton
+import com.kiras.run.presentation.run_overview.mappers.toDailyGoalUi
 import com.kiras.run.presentation.util.toGreetingRes
 import com.kiras.run.presentation.util.toHomeHeaderDate
 import com.kiras.run.presentation.util.toLastRunDate
 import org.koin.compose.viewmodel.koinViewModel
+import java.time.LocalDate
 import java.time.ZonedDateTime
 
 @Composable
@@ -41,6 +52,14 @@ fun RunOverviewScreenRoot(
     onStatisticsClick: () -> Unit,
     viewModel: RunOverviewViewModel = koinViewModel()
 ) {
+    val context = LocalContext.current
+    ObserveAsEvents(viewModel.events) { event ->
+        when(event) {
+            is RunOverviewEvent.Error -> {
+                Toast.makeText(context, event.error.asString(context), Toast.LENGTH_LONG).show()
+            }
+        }
+    }
     RunOverviewScreen(
         state = viewModel.state,
         onAction = { action ->
@@ -99,8 +118,17 @@ private fun RunOverviewScreen(
                         onAccountClick = { onAction(RunOverviewAction.OnAccountClick) },
                         onAccountMenuDismiss = { onAction(RunOverviewAction.OnAccountMenuDismiss) },
                         onLogoutClick = { onAction(RunOverviewAction.OnLogOutClick) },
-                        modifier = Modifier.padding(top = 8.dp)
+                        modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
                     )
+                }
+                if(state.isDailyGoalLoaded) {
+                    item {
+                        DailyGoalCard(
+                            dailyGoal = state.dailyGoal,
+                            onEditClick = { onAction(RunOverviewAction.OnEditGoalClick) },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
                 }
                 item {
                     if(state.lastRun != null) {
@@ -135,6 +163,19 @@ private fun RunOverviewScreen(
                 onDeleteRunClick = { onAction(RunOverviewAction.OnDeleteRunClick(it)) }
             )
         }
+        if(state.isGoalSheetOpen) {
+            DailyGoalBottomSheet(
+                draft = state.goalDraft,
+                distanceUnit = state.distanceUnit,
+                onDismiss = { onAction(RunOverviewAction.OnGoalSheetDismiss) },
+                onMetricChange = { onAction(RunOverviewAction.OnGoalMetricChange(it)) },
+                onDecrementClick = { onAction(RunOverviewAction.OnGoalDecrementClick) },
+                onIncrementClick = { onAction(RunOverviewAction.OnGoalIncrementClick) },
+                onPresetClick = { onAction(RunOverviewAction.OnGoalPresetClick(it)) },
+                onDayToggle = { onAction(RunOverviewAction.OnGoalDayToggle(it)) },
+                onSaveClick = { onAction(RunOverviewAction.OnSaveGoalClick) }
+            )
+        }
     }
 }
 
@@ -143,7 +184,24 @@ private fun RunOverviewScreen(
 private fun RunOverviewScreenPreview() {
     SplitlineTheme {
         RunOverviewScreen(
-            state = RunOverviewState(username = "Kyrylo"),
+            state = RunOverviewState(
+                username = "Kyrylo",
+                dailyGoal = DailyGoalProgress(
+                    todayValue = 3_200L,
+                    target = 5_000L,
+                    week = listOf(
+                        DayGoalStatus.MET,
+                        DayGoalStatus.TODAY,
+                        DayGoalStatus.UPCOMING,
+                        DayGoalStatus.UPCOMING,
+                        DayGoalStatus.UPCOMING,
+                        DayGoalStatus.REST,
+                        DayGoalStatus.REST
+                    ),
+                    streakDays = 12
+                ).toDailyGoalUi(GoalMetric.DISTANCE, DistanceUnit.KILOMETERS, LocalDate.of(2026, 10, 27)),
+                isDailyGoalLoaded = true
+            ),
             onAction = {}
         )
     }

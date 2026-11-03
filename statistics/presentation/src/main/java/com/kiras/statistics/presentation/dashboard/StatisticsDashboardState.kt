@@ -5,5 +5,6 @@ data class StatisticsDashboardState(
     val totalTimeRun: String,
     val fastestEverRun: String,
     val avgDistance: String,
-    val avgPace: String
+    val avgPace: String,
+    val isAvgSpeedShown: Boolean
 )

@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.kiras.core.presentation.designsystem.SplitlineGrayTertiary
 
 @Composable
 fun SplitlineActionButton(
@@ -37,7 +36,7 @@ fun SplitlineActionButton(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
             disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-            disabledContentColor = SplitlineGrayTertiary
+            disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant
         ),
         shape = RoundedCornerShape(100.dp),
         modifier = modifier.height(IntrinsicSize.Min)

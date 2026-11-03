@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kiras.core.domain.location.Location
 import com.kiras.core.domain.run.Run
+import com.kiras.core.domain.settings.UserSettings
 import com.kiras.core.presentation.designsystem.CalendarIcon
 import com.kiras.core.presentation.designsystem.RunOutlinedIcon
 import com.kiras.core.presentation.designsystem.SplitlineTheme
@@ -131,15 +132,17 @@ fun DataGrid(
     runUi: RunUi,
     modifier: Modifier = Modifier
 ) {
-    val runDataUiList = listOf(
+    val runDataUiList = listOfNotNull(
         RunDataUi(
             name = stringResource(R.string.distance),
             value = runUi.distance
         ),
-        RunDataUi(
-            name = stringResource(R.string.pace),
-            value = runUi.pace
-        ),
+        runUi.pace?.let { pace ->
+            RunDataUi(
+                name = stringResource(R.string.pace),
+                value = pace
+            )
+        },
         RunDataUi(
             name = stringResource(R.string.avg_speed),
             value = runUi.avgSpeed
@@ -190,7 +193,7 @@ fun RunningTimeSection(
                 .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
                 .border(
                     width = 1.dp,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     shape = RoundedCornerShape(10.dp)
                 )
                 .padding(4.dp),
@@ -199,7 +202,7 @@ fun RunningTimeSection(
             Icon(
                 imageVector = RunOutlinedIcon,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
+                tint = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }
         Spacer(modifier = Modifier.width(16.dp))
@@ -255,7 +258,7 @@ private fun RunListPreview() {
                 maxSpeedKmh = 12.543,
                 totalElevationMeters = 120,
                 mapPictureUrl = null
-            ).toRunUi(),
+            ).toRunUi(UserSettings()),
             onDeleteClick = { }
         )
     }

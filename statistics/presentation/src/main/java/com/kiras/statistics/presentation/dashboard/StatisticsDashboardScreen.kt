@@ -122,7 +122,9 @@ private fun StatisticsDashboardScreen(
                         .padding(horizontal = 16.dp)
                 ) {
                     StatisticsCard(
-                        title = stringResource(R.string.average_pace),
+                        title = stringResource(
+                            if(state.isAvgSpeedShown) R.string.average_speed else R.string.average_pace
+                        ),
                         value = state.avgPace,
                         modifier = Modifier.weight(1f)
                     )
@@ -142,7 +144,8 @@ private fun StatisticsDashboardScreenPreview() {
                 totalTimeRun = "0d 0h 0m",
                 fastestEverRun = "143.9 km/h",
                 avgDistance = "0.1 km",
-                avgPace = "07:10"
+                avgPace = "7:10 / km",
+                isAvgSpeedShown = false
             ),
             onAction = {}
         )

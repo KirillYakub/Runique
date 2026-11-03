@@ -15,9 +15,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,6 +34,7 @@ import com.kiras.core.presentation.designsystem.components.SplitlineScaffold
 import com.kiras.core.presentation.designsystem.components.SplitlineToolbar
 import com.kiras.core.presentation.ui.ObserveAsEvents
 import com.kiras.run.presentation.R
+import com.kiras.run.presentation.active_run.components.CountdownOverlay
 import com.kiras.run.presentation.active_run.components.RunDataCard
 import com.kiras.run.presentation.active_run.maps.TrackerMap
 import com.kiras.run.presentation.active_run.service.ActiveRunService
@@ -161,6 +164,14 @@ private fun ActiveRunScreen(
         }
     }
 
+    val view = LocalView.current
+    DisposableEffect(state.keepScreenOn) {
+        view.keepScreenOn = state.keepScreenOn
+        onDispose {
+            view.keepScreenOn = false
+        }
+    }
+
     SplitlineScaffold(
         topAppBar = {
             SplitlineToolbar(
@@ -203,10 +214,19 @@ private fun ActiveRunScreen(
         RunDataCard(
             elapsedTime = state.elapsedTime,
             runData = state.runData,
+            distanceUnit = state.distanceUnit,
+            paceFormat = state.paceFormat,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(padding)
                 .padding(16.dp)
+        )
+    }
+
+    if(state.countdownRemaining != null) {
+        CountdownOverlay(
+            remainingSeconds = state.countdownRemaining,
+            onCancelClick = { onAction(ActiveRunAction.OnCancelCountdownClick) }
         )
     }
 

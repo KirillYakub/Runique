@@ -21,7 +21,7 @@ data class Location(
         return EARTH_RADIUS_METERS * c.toFloat()
     }
 
-    companion object {
-        private const val EARTH_RADIUS_METERS = 6371000
+    private companion object {
+        const val EARTH_RADIUS_METERS = 6371000
     }
 }

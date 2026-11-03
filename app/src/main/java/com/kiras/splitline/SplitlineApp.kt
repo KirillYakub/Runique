@@ -5,8 +5,10 @@ import com.kiras.auth.data.di.authDataModule
 import com.kiras.auth.presentation.di.authPresentationModule
 import com.kiras.core.data.di.coreDataModule
 import com.kiras.core.database.di.coreDatabaseModule
+import com.kiras.run.data.di.runDataModule
 import com.kiras.run.location.di.runLocationModule
 import com.kiras.run.presentation.di.runPresentationModule
+import com.kiras.settings.presentation.di.settingsPresentationModule
 import com.kiras.splitline.di.appModule
 import com.kiras.statistics.data.di.statisticsDataModule
 import com.kiras.statistics.presentation.di.statisticsPresentationModule
@@ -35,10 +37,12 @@ class SplitlineApp : Application() {
                 coreDatabaseModule,
                 authDataModule,
                 authPresentationModule,
+                runDataModule,
                 runLocationModule,
                 runPresentationModule,
                 statisticsDataModule,
-                statisticsPresentationModule
+                statisticsPresentationModule,
+                settingsPresentationModule
             )
         }
     }

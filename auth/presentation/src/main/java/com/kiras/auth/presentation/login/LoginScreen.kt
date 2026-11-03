@@ -139,7 +139,7 @@ private fun LoginScreen(
                     withStyle(
                         style = SpanStyle(
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
                             fontFamily = Poppins
                         )
                     ) {
