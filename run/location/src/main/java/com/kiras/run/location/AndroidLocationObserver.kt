@@ -14,6 +14,7 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.kiras.core.domain.location.LocationWithAltitude
+import com.kiras.core.domain.settings.GpsAccuracy
 import com.kiras.run.domain.LocationObserver
 import com.kiras.run.location.mappers.toLocationWithAltitude
 import kotlinx.coroutines.channels.awaitClose
@@ -28,7 +29,7 @@ class AndroidLocationObserver(
 
     private val client = LocationServices.getFusedLocationProviderClient(context)
 
-    override fun observeLocation(interval: Long): Flow<LocationWithAltitude> {
+    override fun observeLocation(accuracy: GpsAccuracy): Flow<LocationWithAltitude> {
         return callbackFlow {
             val locationManager = context.getSystemService<LocationManager>()!!
             var isGpsEnabled = false
@@ -58,8 +59,20 @@ class AndroidLocationObserver(
                     }
                 }
 
-                val request = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, interval)
-                    .build()
+                val request = when(accuracy) {
+                    GpsAccuracy.HIGH -> LocationRequest.Builder(
+                        Priority.PRIORITY_HIGH_ACCURACY,
+                        HIGH_ACCURACY_INTERVAL_MILLIS
+                    )
+                    GpsAccuracy.BALANCED -> LocationRequest.Builder(
+                        Priority.PRIORITY_BALANCED_POWER_ACCURACY,
+                        BALANCED_ACCURACY_INTERVAL_MILLIS
+                    )
+                    GpsAccuracy.LOW -> LocationRequest.Builder(
+                        Priority.PRIORITY_LOW_POWER,
+                        LOW_ACCURACY_INTERVAL_MILLIS
+                    )
+                }.build()
                 val callback = object : LocationCallback() {
                     override fun onLocationResult(result: LocationResult) {
                         super.onLocationResult(result)
@@ -75,5 +88,11 @@ class AndroidLocationObserver(
                 }
             }
         }
+    }
+
+    private companion object {
+        const val HIGH_ACCURACY_INTERVAL_MILLIS = 1000L
+        const val BALANCED_ACCURACY_INTERVAL_MILLIS = 2000L
+        const val LOW_ACCURACY_INTERVAL_MILLIS = 5000L
     }
 }

@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.runique.android.feature.ui)
+    alias(libs.plugins.splitline.android.feature.ui)
     alias(libs.plugins.kotlin.serialization)
 }
 

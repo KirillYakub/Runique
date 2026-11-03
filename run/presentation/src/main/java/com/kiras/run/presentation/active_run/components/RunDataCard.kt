@@ -17,14 +17,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.kiras.core.presentation.designsystem.RuniqueTheme
+import com.kiras.core.domain.settings.DistanceUnit
+import com.kiras.core.domain.settings.PaceFormat
+import com.kiras.core.presentation.designsystem.SplitlineTheme
 import com.kiras.core.presentation.ui.formatted
-import com.kiras.core.presentation.ui.toFormattedKm
-import com.kiras.core.presentation.ui.toFormattedPace
+import com.kiras.core.presentation.ui.toFormattedDistance
+import com.kiras.core.presentation.ui.toFormattedPaceOrSpeed
 import com.kiras.run.domain.RunData
 import com.kiras.run.presentation.R
 import kotlin.time.Duration
@@ -34,6 +35,8 @@ import kotlin.time.Duration.Companion.minutes
 fun RunDataCard(
     elapsedTime: Duration,
     runData: RunData,
+    distanceUnit: DistanceUnit,
+    paceFormat: PaceFormat,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -46,7 +49,7 @@ fun RunDataCard(
         RunDataItem(
             title = stringResource(R.string.duration),
             value = elapsedTime.formatted(),
-            valueFontSize = 32.sp
+            valueStyle = MaterialTheme.typography.headlineMedium
         )
         Spacer(modifier = Modifier.height(24.dp))
         Row(
@@ -56,13 +59,20 @@ fun RunDataCard(
         ) {
             RunDataItem(
                 title = stringResource(R.string.distance),
-                value = (runData.distanceMeters / 1000.0).toFormattedKm(),
+                value = runData.distanceMeters.toFormattedDistance(distanceUnit),
                 modifier = Modifier.defaultMinSize(minWidth = 75.dp)
             )
             RunDataItem(
-                title = stringResource(R.string.pace),
-                value = elapsedTime.toFormattedPace(
-                    distanceKm = (runData.distanceMeters / 1000.0)
+                title = stringResource(
+                    when(paceFormat) {
+                        PaceFormat.PACE -> R.string.pace
+                        PaceFormat.SPEED -> R.string.speed
+                    }
+                ),
+                value = elapsedTime.toFormattedPaceOrSpeed(
+                    distanceMeters = runData.distanceMeters,
+                    unit = distanceUnit,
+                    paceFormat = paceFormat
                 ),
                 modifier = Modifier.defaultMinSize(minWidth = 75.dp)
             )
@@ -75,7 +85,7 @@ private fun RunDataItem(
     title: String,
     value: String,
     modifier: Modifier = Modifier,
-    valueFontSize: TextUnit = 16.sp
+    valueStyle: TextStyle = MaterialTheme.typography.bodyLarge
 ) {
     Column(
         modifier = modifier,
@@ -84,12 +94,12 @@ private fun RunDataItem(
         Text(
             text = title,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            fontSize = 12.sp
+            style = MaterialTheme.typography.bodySmall
         )
         Text(
             text = value,
             color = MaterialTheme.colorScheme.onSurface,
-            fontSize = valueFontSize
+            style = valueStyle
         )
     }
 }
@@ -97,13 +107,15 @@ private fun RunDataItem(
 @Preview
 @Composable
 private fun RunDataCardPreview() {
-    RuniqueTheme {
+    SplitlineTheme {
         RunDataCard(
             elapsedTime = 10.minutes,
             runData = RunData(
                 distanceMeters = 3425,
                 pace = 3.minutes
-            )
+            ),
+            distanceUnit = DistanceUnit.KILOMETERS,
+            paceFormat = PaceFormat.PACE
         )
     }
 }

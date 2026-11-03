@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">Settings</string>
+    <string name="units">Units</string>
+    <string name="distance">Distance</string>
+    <string name="pace">Pace</string>
+    <string name="pace_subtitle">Shown during runs</string>
+    <string name="run_tracking">Run tracking</string>
+    <string name="countdown">Countdown</string>
+    <string name="countdown_subtitle">Before the run starts</string>
+    <string name="keep_screen_on">Keep screen on</string>
+    <string name="keep_screen_on_subtitle">While the run screen is open</string>
+    <string name="gps_accuracy">GPS accuracy</string>
+    <string name="gps_accuracy_subtitle">Higher uses more battery</string>
+    <string name="appearance">Appearance</string>
+    <string name="theme">Theme</string>
+    <string name="theme_subtitle">System follows your phone settings</string>
+    <string name="unit_km">km</string>
+    <string name="unit_mi">mi</string>
+    <string name="pace_min_per_km">min/km</string>
+    <string name="pace_min_per_mi">min/mi</string>
+    <string name="speed_km_per_hour">km/h</string>
+    <string name="speed_miles_per_hour">mph</string>
+    <string name="countdown_off">Off</string>
+    <string name="countdown_seconds">%1$d s</string>
+    <string name="gps_high">High</string>
+    <string name="gps_balanced">Balanced</string>
+    <string name="gps_low">Low</string>
+    <string name="theme_system">System</string>
+    <string name="theme_night">Night</string>
+    <string name="theme_day">Day</string>
+    <string name="version_footer">Splitline %1$s</string>
+</resources>

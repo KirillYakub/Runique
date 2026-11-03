@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.runique.android.library.compose)
+    alias(libs.plugins.splitline.android.library.compose)
 }
 
 android {

@@ -1,5 +1,3 @@
 package com.kiras.core.domain
 
-data class AuthInfo(
-    val userId: String
-)
+data class AuthInfo(val userId: String)

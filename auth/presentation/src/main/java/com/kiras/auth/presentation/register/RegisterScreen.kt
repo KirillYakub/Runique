@@ -29,14 +29,15 @@ import com.kiras.auth.domain.PasswordValidationState
 import com.kiras.auth.domain.usecase.ValidatePasswordUseCase
 import com.kiras.core.presentation.designsystem.CheckIcon
 import com.kiras.core.presentation.designsystem.EmailIcon
+import com.kiras.core.presentation.designsystem.PersonIcon
 import com.kiras.core.presentation.designsystem.Poppins
 import com.kiras.auth.presentation.R
 import com.kiras.auth.presentation.register.components.PasswordRequirement
-import com.kiras.core.presentation.designsystem.RuniqueTheme
-import com.kiras.core.presentation.designsystem.components.GradientBackground
-import com.kiras.core.presentation.designsystem.components.RuniqueActionButton
-import com.kiras.core.presentation.designsystem.components.RuniquePasswordTextField
-import com.kiras.core.presentation.designsystem.components.RuniqueTextField
+import com.kiras.core.presentation.designsystem.SplitlineTheme
+import com.kiras.core.presentation.designsystem.components.SplitlineActionButton
+import com.kiras.core.presentation.designsystem.components.SplitlinePasswordTextField
+import com.kiras.core.presentation.designsystem.components.SplitlineScaffold
+import com.kiras.core.presentation.designsystem.components.SplitlineTextField
 import com.kiras.core.presentation.ui.ObserveAsEvents
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -77,11 +78,11 @@ private fun RegisterScreen(
     state: RegisterState,
     onAction: (RegisterAction) -> Unit
 ) {
-    GradientBackground {
+    SplitlineScaffold { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .weight(1f)
+                .padding(padding)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp)
                 .padding(vertical = 32.dp)
@@ -106,7 +107,7 @@ private fun RegisterScreen(
                     withStyle(
                         style = SpanStyle(
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
                             fontFamily = Poppins
                         )
                     ) {
@@ -127,7 +128,16 @@ private fun RegisterScreen(
                 }
             )
             Spacer(modifier = Modifier.height(48.dp))
-            RuniqueTextField(
+            SplitlineTextField(
+                state = state.username,
+                startIcon = PersonIcon,
+                endIcon = if(state.isUsernameValid) CheckIcon else null,
+                hint = stringResource(R.string.username_example),
+                title = stringResource(R.string.username),
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            SplitlineTextField(
                 state = state.email,
                 startIcon = EmailIcon,
                 endIcon = if(state.isEmailValid) CheckIcon else null,
@@ -138,7 +148,7 @@ private fun RegisterScreen(
                 keyboardType = KeyboardType.Email,
             )
             Spacer(modifier = Modifier.height(16.dp))
-            RuniquePasswordTextField(
+            SplitlinePasswordTextField(
                 state = state.password,
                 isPasswordVisible = state.isPasswordVisible,
                 onTogglePasswordVisibility = {
@@ -171,7 +181,7 @@ private fun RegisterScreen(
             )
             Spacer(modifier = Modifier.height(32.dp))
 
-            RuniqueActionButton(
+            SplitlineActionButton(
                 text = stringResource(id = R.string.register),
                 isLoading = state.isRegistering,
                 enabled = state.canRegister,
@@ -185,7 +195,7 @@ private fun RegisterScreen(
 @Preview
 @Composable
 private fun RegisterScreenPreview() {
-    RuniqueTheme {
+    SplitlineTheme {
         RegisterScreen(
             state = RegisterState(
                 passwordValidationState = PasswordValidationState(

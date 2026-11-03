@@ -1,6 +1,6 @@
 # Data layer
 
-- Name implementations of domain interfaces `<Technology><Interface>`: `RoomLocalRunDataSource`, `RoomAnalyticsRepository`, `EncryptedSessionStorage`, `AndroidLocationObserver`. Do not use `Impl` or `Default` suffixes/prefixes.
+- Name repository implementations `<Interface>Impl`: `AuthRepositoryImpl`, `StatisticsRepositoryImpl`. Name other implementations of domain interfaces `<Technology><Interface>`: `RoomLocalRunDataSource`, `EncryptedSessionStorage`, `AndroidLocationObserver`. Do not use a `Default` prefix.
 - Expose implementations through the module's Koin module bound to the domain interface. Do not mark them `internal` (see code-style rule).
 - Room:
   - Entities go in `:core:database` `entity/` (`XEntity`), DAOs in `dao/` (`XDao`), the database in `RunDatabase`.
@@ -12,4 +12,4 @@
 - I/O runs in `withContext(Dispatchers.IO)`.
 - Independent queries run in parallel with `async`.
 - Work that must finish after the screen closes runs on the injected application `CoroutineScope`.
-- Constants go in a `private companion object` and are used directly in the class, not passed in as default constructor parameters.
+- Constants follow the constants rule.

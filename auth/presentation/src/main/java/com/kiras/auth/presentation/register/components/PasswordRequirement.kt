@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.kiras.core.presentation.designsystem.CheckIcon
 import com.kiras.core.presentation.designsystem.CrossIcon
 
@@ -27,13 +26,13 @@ fun PasswordRequirement(
         Icon(
             imageVector = if(isValid) CheckIcon else CrossIcon,
             contentDescription = null,
-            tint = if(isValid) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+            tint = if(isValid) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.error
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = text,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            fontSize = 14.sp
+            style = MaterialTheme.typography.bodyMedium
         )
     }
 }
