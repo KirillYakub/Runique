@@ -1,0 +1,37 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="60dp"
+    android:height="67dp"
+    android:viewportWidth="60"
+    android:viewportHeight="67">
+  <group android:name="scale"
+      android:pivotX="30"
+      android:pivotY="33.5"
+      android:scaleX="0.5"
+      android:scaleY="0.5">
+    <group
+        android:name="mark"
+        android:scaleX="0.2"
+        android:scaleY="0.2"
+        android:translateX="-21.2"
+        android:translateY="-17.7">
+      <path
+          android:pathData="M170,398 L280,398 A84,84 0 0,0 280,230 L232,230 A32,32 0 0,1 232,166 L342,166 A26,26 0 0,0 342,114 L232,114 A84,84 0 0,0 232,282 L280,282 A32,32 0 0,1 280,346 L170,346 A26,26 0 0,0 170,398 Z"
+          android:fillColor="#C8F45A"/>
+      <path
+          android:pathData="M128,372 a42,42 0 1,0 84,0 a42,42 0 1,0 -84,0 Z"
+          android:fillColor="#F5F6F2"/>
+      <path
+          android:pathData="M140,372 a30,30 0 1,0 60,0 a30,30 0 1,0 -60,0 Z"
+          android:fillColor="#5AB0F4"/>
+      <path
+          android:pathData="M300,140 a42,42 0 1,0 84,0 a42,42 0 1,0 -84,0 Z"
+          android:fillColor="#F5F6F2"/>
+      <path
+          android:pathData="M312,140 a30,30 0 1,0 60,0 a30,30 0 1,0 -60,0 Z"
+          android:fillColor="#C8F45A"/>
+      <path
+          android:pathData="M331,140 a11,11 0 1,0 22,0 a11,11 0 1,0 -22,0 Z"
+          android:fillColor="#0E1013"/>
+    </group>
+  </group>
+</vector>

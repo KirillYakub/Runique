@@ -38,6 +38,12 @@ val Typography = Typography(
         lineHeight = 64.sp,
         letterSpacing = (-1.5).sp
     ),
+    displayMedium = TextStyle(
+        fontFamily = Poppins,
+        fontWeight = FontWeight.Bold,
+        fontSize = 46.sp,
+        letterSpacing = (-1.5).sp
+    ),
     headlineLarge = TextStyle(
         fontFamily = Poppins,
         fontWeight = FontWeight.Bold,

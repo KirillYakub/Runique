@@ -10,6 +10,8 @@ import kotlin.time.Duration
 data class ActiveRunState(
     val elapsedTime: Duration = Duration.ZERO,
     val runData: RunData = RunData(),
+    val maxSpeedKmh: Double = 0.0,
+    val showFinishDialog: Boolean = false,
     val shouldTrack: Boolean = false,
     val hasStartedRunning: Boolean = false,
     val currentLocation: Location? = null,
