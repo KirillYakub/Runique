@@ -3,13 +3,9 @@ package com.kiras.run.presentation.active_run.maps
 import android.graphics.Bitmap
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,10 +13,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -39,7 +34,7 @@ import com.google.maps.android.compose.rememberUpdatedMarkerState
 import com.google.maps.android.ktx.awaitSnapshot
 import com.kiras.core.domain.location.Location
 import com.kiras.core.domain.location.LocationTimestamp
-import com.kiras.core.presentation.designsystem.RunIcon
+import com.kiras.core.presentation.designsystem.LocalIsDarkTheme
 import com.kiras.run.presentation.R
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -53,14 +48,31 @@ fun TrackerMap(
     currentLocation: Location?,
     locations: List<List<LocationTimestamp>>,
     onSnapshot: (Bitmap) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues()
 ) {
     val context = LocalContext.current
-    val mapStyle = remember {
-        MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style)
+    val isDarkTheme = LocalIsDarkTheme.current
+    val mapStyle = remember(isDarkTheme) {
+        MapStyleOptions.loadRawResourceStyle(
+            context,
+            if(isDarkTheme) R.raw.map_style_night else R.raw.map_style_day
+        )
     }
     val cameraPositionState = rememberCameraPositionState()
     val marketState = rememberUpdatedMarkerState()
+
+    val startPoint = locations.firstOrNull()?.firstOrNull()?.location?.location
+    val endPoint = locations.lastOrNull()?.lastOrNull()?.location?.location
+    val startMarkerState = rememberUpdatedMarkerState(
+        position = LatLng(startPoint?.lat ?: 0.0, startPoint?.long ?: 0.0)
+    )
+    val endMarkerState = rememberUpdatedMarkerState(
+        position = LatLng(endPoint?.lat ?: 0.0, endPoint?.long ?: 0.0)
+    )
+    val primaryColor = MaterialTheme.colorScheme.primary
+    val secondaryColor = MaterialTheme.colorScheme.secondary
+    val ringColor = MaterialTheme.colorScheme.background
 
     val markerPositionLat by animateFloatAsState(
         targetValue = currentLocation?.lat?.toFloat() ?: 0f,
@@ -95,6 +107,7 @@ fun TrackerMap(
 
     GoogleMap(
         cameraPositionState = cameraPositionState,
+        contentPadding = contentPadding,
         properties = MapProperties(
             mapStyleOptions = mapStyle
         ),
@@ -147,25 +160,48 @@ fun TrackerMap(
             }
         }
 
+        if(startPoint != null) {
+            MarkerComposable(
+                secondaryColor,
+                ringColor,
+                state = startMarkerState,
+                anchor = Offset(0.5f, 0.5f)
+            ) {
+                RouteDot(
+                    color = secondaryColor,
+                    ringWidth = 2.5.dp,
+                    showHalo = false
+                )
+            }
+        }
+
+        if(isRunFinished && endPoint != null) {
+            MarkerComposable(
+                primaryColor,
+                ringColor,
+                state = endMarkerState,
+                anchor = Offset(0.5f, 0.5f)
+            ) {
+                RouteDot(
+                    color = primaryColor,
+                    ringWidth = 3.dp,
+                    showHalo = false
+                )
+            }
+        }
+
         if(!isRunFinished && currentLocation != null) {
             MarkerComposable(
-                currentLocation,
-                state = marketState
+                primaryColor,
+                ringColor,
+                state = marketState,
+                anchor = Offset(0.5f, 0.5f)
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(35.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = RunIcon,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
+                RouteDot(
+                    color = primaryColor,
+                    ringWidth = 3.dp,
+                    showHalo = true
+                )
             }
         }
     }

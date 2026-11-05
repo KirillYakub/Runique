@@ -33,7 +33,7 @@ fun <T> SettingsSegmentedControl(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(3.dp)
+            .padding(2.dp)
             .selectableGroup(),
         horizontalArrangement = Arrangement.spacedBy(2.dp)
     ) {
@@ -42,7 +42,7 @@ fun <T> SettingsSegmentedControl(
             Box(
                 modifier = Modifier
                     .then(if(isFullWidth) Modifier.weight(1f) else Modifier)
-                    .clip(RoundedCornerShape(9.dp))
+                    .clip(RoundedCornerShape(10.dp))
                     .background(
                         if(isSelected) MaterialTheme.colorScheme.primary
                         else Color.Transparent
@@ -52,7 +52,7 @@ fun <T> SettingsSegmentedControl(
                         role = Role.RadioButton,
                         onClick = { onOptionSelect(option) }
                     )
-                    .padding(horizontal = 12.dp, vertical = 7.dp),
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(

@@ -8,4 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="splitline_background">#FF0E1013</color>
+    <color name="splitline_day_background">#FFF5F6F2</color>
 </resources>

@@ -41,7 +41,7 @@ class ActiveRunViewModel(
 ): ViewModel() {
 
     var state by mutableStateOf(ActiveRunState(
-        shouldTrack = ActiveRunService.isServiceActive && runningTracker.isTracking.value,
+        shouldTrack = ActiveRunService.isServiceActive,
         hasStartedRunning = ActiveRunService.isServiceActive,
     ))
         private set
@@ -93,7 +93,8 @@ class ActiveRunViewModel(
             .runData
             .onEach {
                 state = state.copy(
-                    runData = it
+                    runData = it,
+                    maxSpeedKmh = LocationDataCalculator.getMaxSpeedKmh(it.locations)
                 )
             }
             .launchIn(viewModelScope)
@@ -123,8 +124,8 @@ class ActiveRunViewModel(
     fun onAction(action: ActiveRunAction) {
         when(action) {
             ActiveRunAction.OnBackRunClick -> {
-                if(!state.isSavingRun) {
-                    state = state.copy(shouldTrack = false)
+                if(state.hasStartedRunning) {
+                    state = state.copy(showFinishDialog = true)
                 }
             }
             ActiveRunAction.OnFinishRunClick -> {
@@ -133,21 +134,25 @@ class ActiveRunViewModel(
                     isSavingRun = true
                 )
             }
-            ActiveRunAction.OnResumeRunClick -> {
+            ActiveRunAction.OnDismissFinishDialog -> {
                 if(!state.isSavingRun) {
-                    state = state.copy(shouldTrack = true)
+                    state = state.copy(showFinishDialog = false)
                 }
             }
-            ActiveRunAction.OnToggleRunClick -> {
+            ActiveRunAction.OnStopRunClick -> {
+                state = state.copy(showFinishDialog = true)
+            }
+            ActiveRunAction.OnStartRunClick -> {
                 when {
                     countdownJob != null -> cancelCountdown()
-                    !state.hasStartedRunning && state.countdown != CountdownDuration.OFF -> {
+                    state.hasStartedRunning -> Unit
+                    state.countdown != CountdownDuration.OFF -> {
                         startCountdown(state.countdown.seconds)
                     }
                     else -> {
                         state = state.copy(
                             hasStartedRunning = true,
-                            shouldTrack = !state.shouldTrack
+                            shouldTrack = true
                         )
                     }
                 }

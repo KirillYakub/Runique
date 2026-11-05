@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kiras.core.presentation.designsystem.HomeIcon
 import com.kiras.core.presentation.designsystem.R
+import com.kiras.core.presentation.designsystem.SettingsIcon
 import com.kiras.core.presentation.designsystem.SplitlineTheme
 import com.kiras.core.presentation.designsystem.StatisticsIcon
 import com.kiras.core.presentation.designsystem.components.util.BottomBarTab
@@ -63,6 +64,13 @@ fun SplitlineBottomBar(
                 label = stringResource(R.string.statistics),
                 isSelected = selectedTab == BottomBarTab.STATISTICS,
                 onClick = { onTabClick(BottomBarTab.STATISTICS) },
+                modifier = Modifier.weight(1f)
+            )
+            BottomBarItem(
+                icon = SettingsIcon,
+                label = stringResource(R.string.settings),
+                isSelected = selectedTab == BottomBarTab.SETTINGS,
+                onClick = { onTabClick(BottomBarTab.SETTINGS) },
                 modifier = Modifier.weight(1f)
             )
         }

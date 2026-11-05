@@ -28,7 +28,9 @@ import com.kiras.core.domain.settings.DistanceUnit
 import com.kiras.core.domain.settings.GpsAccuracy
 import com.kiras.core.domain.settings.PaceFormat
 import com.kiras.core.presentation.designsystem.SplitlineTheme
+import com.kiras.core.presentation.designsystem.components.SplitlineBottomBar
 import com.kiras.core.presentation.designsystem.components.SplitlineScaffold
+import com.kiras.core.presentation.designsystem.components.util.BottomBarTab
 import com.kiras.core.presentation.ui.ObserveAsEvents
 import com.kiras.settings.presentation.R
 import com.kiras.settings.presentation.settings.components.SettingsDivider
@@ -80,7 +82,20 @@ private fun SettingsScreen(
     onAction: (SettingsAction) -> Unit
 ) {
     val settings = state.settings
-    SplitlineScaffold { padding ->
+    SplitlineScaffold(
+        bottomBar = {
+            SplitlineBottomBar(
+                selectedTab = BottomBarTab.SETTINGS,
+                onTabClick = { tab ->
+                    when(tab) {
+                        BottomBarTab.HOME -> onAction(SettingsAction.OnHomeClick)
+                        BottomBarTab.STATISTICS -> onAction(SettingsAction.OnStatisticsClick)
+                        BottomBarTab.SETTINGS -> Unit
+                    }
+                }
+            )
+        }
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()

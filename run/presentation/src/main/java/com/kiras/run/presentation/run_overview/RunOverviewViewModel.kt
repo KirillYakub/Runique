@@ -144,7 +144,8 @@ class RunOverviewViewModel(
             }
             RunOverviewAction.OnSaveGoalClick -> saveGoal()
             RunOverviewAction.OnStartClick,
-            RunOverviewAction.OnStatisticsClick -> Unit
+            RunOverviewAction.OnStatisticsClick,
+            RunOverviewAction.OnSettingsClick -> Unit
         }
     }
 

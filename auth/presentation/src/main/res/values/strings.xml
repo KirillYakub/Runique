@@ -19,7 +19,7 @@
     <string name="lower_case">Contains lowercase character</string>
     <string name="upper_case">Contains uppercase character</string>
     <string name="register">Register</string>
-    <string name="registration_success">Registration successful! Welcome to Splitline</string>
+    <string name="registration_success">Registration successful!</string>
     <string name="hi_there">Hi there!</string>
     <string name="splitline_welcome_text">Welcome to your ultimate running companion! Track, analyze and conquer your runs.</string>
     <string name="do_not_have_an_account">Do not have an account?</string>

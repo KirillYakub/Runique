@@ -25,7 +25,7 @@ object LocationDataCalculator {
     }
 
     fun getMaxSpeedKmh(locations: List<List<LocationTimestamp>>): Double {
-        return locations.maxOf { locationsSet ->
+        return locations.maxOfOrNull { locationsSet ->
             locationsSet.zipWithNext { location1, location2 ->
                 val distance = location1.location.location.distanceTo(
                     location2.location.location
@@ -37,6 +37,6 @@ object LocationDataCalculator {
                 else
                     (distance / 1000) / hoursDifference
             }.maxOrNull() ?: 0.0
-        }
+        } ?: 0.0
     }
 }

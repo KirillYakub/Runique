@@ -50,6 +50,7 @@ fun RunOverviewScreenRoot(
     onStartRunClick: () -> Unit,
     onLogoutClick: () -> Unit,
     onStatisticsClick: () -> Unit,
+    onSettingsClick: () -> Unit,
     viewModel: RunOverviewViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
@@ -67,6 +68,7 @@ fun RunOverviewScreenRoot(
                 RunOverviewAction.OnStartClick -> onStartRunClick()
                 RunOverviewAction.OnLogOutClick -> onLogoutClick()
                 RunOverviewAction.OnStatisticsClick -> onStatisticsClick()
+                RunOverviewAction.OnSettingsClick -> onSettingsClick()
                 else -> Unit
             }
             viewModel.onAction(action)
@@ -95,8 +97,10 @@ private fun RunOverviewScreen(
                 SplitlineBottomBar(
                     selectedTab = BottomBarTab.HOME,
                     onTabClick = { tab ->
-                        if(tab == BottomBarTab.STATISTICS) {
-                            onAction(RunOverviewAction.OnStatisticsClick)
+                        when(tab) {
+                            BottomBarTab.STATISTICS -> onAction(RunOverviewAction.OnStatisticsClick)
+                            BottomBarTab.SETTINGS -> onAction(RunOverviewAction.OnSettingsClick)
+                            BottomBarTab.HOME -> Unit
                         }
                     }
                 )

@@ -6,7 +6,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
@@ -58,6 +60,8 @@ val LightColorScheme = lightColorScheme(
     errorContainer = SplitlineDarkRed5
 )
 
+val LocalIsDarkTheme = staticCompositionLocalOf { false }
+
 @Composable
 fun SplitlineTheme(
     isDarkTheme: Boolean = isSystemInDarkTheme(),
@@ -74,9 +78,11 @@ fun SplitlineTheme(
             }
         }
     }
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+    CompositionLocalProvider(LocalIsDarkTheme provides isDarkTheme) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content
+        )
+    }
 }
