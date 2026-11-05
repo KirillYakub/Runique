@@ -39,6 +39,7 @@ import com.google.maps.android.compose.rememberUpdatedMarkerState
 import com.google.maps.android.ktx.awaitSnapshot
 import com.kiras.core.domain.location.Location
 import com.kiras.core.domain.location.LocationTimestamp
+import com.kiras.core.presentation.designsystem.LocalIsDarkTheme
 import com.kiras.core.presentation.designsystem.RunIcon
 import com.kiras.run.presentation.R
 import kotlinx.coroutines.GlobalScope
@@ -56,8 +57,12 @@ fun TrackerMap(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val mapStyle = remember {
-        MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style)
+    val isDarkTheme = LocalIsDarkTheme.current
+    val mapStyle = remember(isDarkTheme) {
+        MapStyleOptions.loadRawResourceStyle(
+            context,
+            if(isDarkTheme) R.raw.map_style_night else R.raw.map_style_day
+        )
     }
     val cameraPositionState = rememberCameraPositionState()
     val marketState = rememberUpdatedMarkerState()

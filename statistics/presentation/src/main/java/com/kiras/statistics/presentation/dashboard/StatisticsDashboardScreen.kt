@@ -29,6 +29,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun StatisticsDashboardScreenRoot(
     onHomeClick: () -> Unit,
+    onSettingsClick: () -> Unit,
     viewModel: StatisticsDashboardViewModel = koinViewModel()
 ) {
     StatisticsDashboardScreen(
@@ -36,6 +37,7 @@ fun StatisticsDashboardScreenRoot(
         onAction = { action ->
             when(action) {
                 StatisticsDashboardAction.OnHomeClick -> onHomeClick()
+                StatisticsDashboardAction.OnSettingsClick -> onSettingsClick()
             }
         }
     )
@@ -58,8 +60,10 @@ private fun StatisticsDashboardScreen(
             SplitlineBottomBar(
                 selectedTab = BottomBarTab.STATISTICS,
                 onTabClick = { tab ->
-                    if(tab == BottomBarTab.HOME) {
-                        onAction(StatisticsDashboardAction.OnHomeClick)
+                    when(tab) {
+                        BottomBarTab.HOME -> onAction(StatisticsDashboardAction.OnHomeClick)
+                        BottomBarTab.SETTINGS -> onAction(StatisticsDashboardAction.OnSettingsClick)
+                        BottomBarTab.STATISTICS -> Unit
                     }
                 }
             )

@@ -37,9 +37,12 @@
             <option value="$PROJECT_DIR$/core/presentation/designsystem" />
             <option value="$PROJECT_DIR$/core/presentation/ui" />
             <option value="$PROJECT_DIR$/run" />
+            <option value="$PROJECT_DIR$/run/data" />
             <option value="$PROJECT_DIR$/run/domain" />
             <option value="$PROJECT_DIR$/run/location" />
             <option value="$PROJECT_DIR$/run/presentation" />
+            <option value="$PROJECT_DIR$/settings" />
+            <option value="$PROJECT_DIR$/settings/presentation" />
             <option value="$PROJECT_DIR$/statistics" />
             <option value="$PROJECT_DIR$/statistics/data" />
             <option value="$PROJECT_DIR$/statistics/domain" />

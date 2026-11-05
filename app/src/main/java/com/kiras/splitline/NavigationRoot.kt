@@ -20,6 +20,8 @@ import com.kiras.run.presentation.run_overview.RunOverviewScreenRoot
 import com.kiras.run.presentation.util.ActiveRunRoute
 import com.kiras.run.presentation.util.RunGraphRoute
 import com.kiras.run.presentation.util.RunOverviewRoute
+import com.kiras.settings.presentation.settings.SettingsScreenRoot
+import com.kiras.settings.presentation.util.SettingsRoute
 import com.kiras.statistics.presentation.dashboard.StatisticsDashboardScreenRoot
 import com.kiras.statistics.presentation.util.StatisticsDashboardRoute
 
@@ -100,6 +102,9 @@ fun NavigationRoot(
                     },
                     onStatisticsClick = {
                         navHostController.navigateToTab(StatisticsDashboardRoute)
+                    },
+                    onSettingsClick = {
+                        navHostController.navigateToTab(SettingsRoute)
                     }
                 )
             }
@@ -139,6 +144,19 @@ fun NavigationRoot(
             StatisticsDashboardScreenRoot(
                 onHomeClick = {
                     navHostController.navigateToTab(RunOverviewRoute)
+                },
+                onSettingsClick = {
+                    navHostController.navigateToTab(SettingsRoute)
+                }
+            )
+        }
+        composable<SettingsRoute> {
+            SettingsScreenRoot(
+                onHomeClick = {
+                    navHostController.navigateToTab(RunOverviewRoute)
+                },
+                onStatisticsClick = {
+                    navHostController.navigateToTab(StatisticsDashboardRoute)
                 }
             )
         }

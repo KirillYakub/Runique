@@ -43,7 +43,7 @@ class SettingsRepositoryImpl(
             try {
                 userSettingsDao.upsertSettings(settings.toUserSettingsEntity(userId))
                 Result.Success(Unit)
-            } catch (e: SQLiteFullException) {
+            } catch (_: SQLiteFullException) {
                 Result.Error(DataError.Local.DISC_FULL)
             }
         }
