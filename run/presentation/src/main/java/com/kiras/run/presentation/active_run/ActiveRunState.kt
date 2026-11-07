@@ -5,6 +5,7 @@ import com.kiras.core.domain.settings.CountdownDuration
 import com.kiras.core.domain.settings.DistanceUnit
 import com.kiras.core.domain.settings.PaceFormat
 import com.kiras.run.domain.RunData
+import com.kiras.run.presentation.active_run.model.RunSplitUi
 import kotlin.time.Duration
 
 data class ActiveRunState(
@@ -23,5 +24,7 @@ data class ActiveRunState(
     val paceFormat: PaceFormat = PaceFormat.PACE,
     val countdown: CountdownDuration = CountdownDuration.OFF,
     val countdownRemaining: Int? = null,
-    val keepScreenOn: Boolean = false
+    val keepScreenOn: Boolean = false,
+    val splits: List<RunSplitUi> = emptyList(),
+    val isSplitsExpanded: Boolean = false
 )

@@ -34,11 +34,11 @@ annotation = "1.9.1"
 
 # Project versions
 projectApplicationId = "com.kiras.splitline"
-projectVersionName = "1.0"
+projectVersionName = "1.1"
 projectMinSdkVersion = "26"
 projectTargetSdkVersion = "36"
 projectCompileSdkVersion = "36"
-projectVersionCode = "1"
+projectVersionCode = "2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

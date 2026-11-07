@@ -11,6 +11,7 @@ import com.kiras.core.domain.settings.SettingsRepository
 import com.kiras.core.domain.user.UserRepository
 import com.kiras.core.domain.util.Result
 import com.kiras.core.presentation.ui.asUiText
+import com.kiras.core.presentation.ui.toFormattedDistance
 import com.kiras.run.domain.goal.DailyGoal
 import com.kiras.run.domain.goal.DailyGoalProgressCalculator
 import com.kiras.run.domain.goal.DailyGoalRepository
@@ -28,6 +29,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.ZoneId
 
 class RunOverviewViewModel(
@@ -56,6 +58,10 @@ class RunOverviewViewModel(
             savedGoal = goal
             val runsUi = runs.map { it.toRunUi(settings) }
             val today = LocalDate.now()
+            val monthRuns = runs.filter { run ->
+                val localDate = run.dateTimeUtc.withZoneSameInstant(ZoneId.systemDefault())
+                YearMonth.from(localDate) == YearMonth.from(today)
+            }
             state = state.copy(
                 runs = runsUi,
                 lastRun = runsUi.firstOrNull(),
@@ -65,7 +71,11 @@ class RunOverviewViewModel(
                         .toDailyGoalUi(it.metric, settings.distanceUnit, today)
                 },
                 isDailyGoalLoaded = true,
-                distanceUnit = settings.distanceUnit
+                distanceUnit = settings.distanceUnit,
+                monthRunCount = monthRuns.size,
+                monthDistance = monthRuns
+                    .sumOf { it.distanceMeters }
+                    .toFormattedDistance(settings.distanceUnit)
             )
         }.launchIn(viewModelScope)
 
@@ -78,6 +88,14 @@ class RunOverviewViewModel(
                 viewModelScope.launch {
                     runRepository.deleteRun(action.runUi.id)
                 }
+            }
+            is RunOverviewAction.OnRunSplitsToggle -> {
+                val expandedRunIds = if(action.runId in state.expandedRunIds) {
+                    state.expandedRunIds - action.runId
+                } else {
+                    state.expandedRunIds + action.runId
+                }
+                state = state.copy(expandedRunIds = expandedRunIds)
             }
             RunOverviewAction.OnAccountClick -> {
                 state = state.copy(isAccountMenuOpen = true)

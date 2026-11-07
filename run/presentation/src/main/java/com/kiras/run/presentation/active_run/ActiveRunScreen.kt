@@ -11,15 +11,11 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,7 +33,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
@@ -55,6 +50,7 @@ import com.kiras.run.presentation.R
 import com.kiras.run.presentation.active_run.components.ActiveRunSheetContent
 import com.kiras.run.presentation.active_run.components.CountdownOverlay
 import com.kiras.run.presentation.active_run.maps.TrackerMap
+import com.kiras.run.presentation.active_run.model.RunSplitUi
 import com.kiras.run.presentation.active_run.service.ActiveRunService
 import com.kiras.run.presentation.util.hasLocationPermission
 import com.kiras.run.presentation.util.hasNotificationPermission
@@ -197,8 +193,7 @@ private fun ActiveRunScreen(
 
     val density = LocalDensity.current
     var peekContentHeightPx by remember { mutableIntStateOf(0) }
-    val navigationBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-    val sheetPeekHeight = with(density) { peekContentHeightPx.toDp() } + 44.dp + navigationBarHeight
+    val sheetPeekHeight = with(density) { peekContentHeightPx.toDp() }
 
     BottomSheetScaffold(
         scaffoldState = rememberBottomSheetScaffoldState(
@@ -207,15 +202,8 @@ private fun ActiveRunScreen(
         sheetPeekHeight = sheetPeekHeight,
         sheetShape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
         sheetContainerColor = MaterialTheme.colorScheme.background,
-        sheetDragHandle = {
-            Box(
-                modifier = Modifier
-                    .padding(vertical = 12.dp)
-                    .size(width = 36.dp, height = 4.dp)
-                    .clip(RoundedCornerShape(2.dp))
-                    .background(MaterialTheme.colorScheme.outline)
-            )
-        },
+        sheetDragHandle = null,
+        sheetSwipeEnabled = false,
         sheetContent = {
             ActiveRunSheetContent(
                 distanceMeters = state.runData.distanceMeters,
@@ -224,6 +212,9 @@ private fun ActiveRunScreen(
                 distanceUnit = state.distanceUnit,
                 paceFormat = state.paceFormat,
                 isRunning = state.hasStartedRunning,
+                splits = state.splits,
+                isSplitsExpanded = state.isSplitsExpanded,
+                onSplitsToggle = { onAction(ActiveRunAction.OnSplitsToggle) },
                 onStartClick = { onAction(ActiveRunAction.OnStartRunClick) },
                 onStopClick = { onAction(ActiveRunAction.OnStopRunClick) },
                 onPeekContentHeightChange = { peekContentHeightPx = it }
@@ -235,6 +226,7 @@ private fun ActiveRunScreen(
                 isRunFinished = state.isRunFinished,
                 currentLocation = state.currentLocation,
                 locations = state.runData.locations,
+                splits = state.splits,
                 onSnapshot = { bmp ->
                     val stream = ByteArrayOutputStream()
                     stream.use {
@@ -350,7 +342,12 @@ private fun ActiveRunScreenPreview() {
                 maxSpeedKmh = 14.2,
                 shouldTrack = true,
                 hasStartedRunning = true,
-                currentLocation = Location(50.1, 14.4)
+                currentLocation = Location(50.1, 14.4),
+                splits = listOf(
+                    RunSplitUi(1, "5:34", 0.79f, false, Location(50.1, 14.4)),
+                    RunSplitUi(2, "5:08", 1f, true, Location(50.11, 14.41))
+                ),
+                isSplitsExpanded = true
             ),
             onServiceToggle = {},
             onAction = {}

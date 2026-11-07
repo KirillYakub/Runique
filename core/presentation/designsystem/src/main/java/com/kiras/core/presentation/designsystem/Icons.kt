@@ -16,6 +16,10 @@ val StatisticsIcon: ImageVector
     @Composable
     get() = ImageVector.vectorResource(id = R.drawable.statistics)
 
+val RunNavigationIcon: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.run_navigation)
+
 val ArrowLeftIcon: ImageVector
     @Composable
     get() = ImageVector.vectorResource(id = R.drawable.arrow_left)

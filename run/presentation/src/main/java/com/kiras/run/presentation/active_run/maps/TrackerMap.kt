@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -36,6 +37,7 @@ import com.kiras.core.domain.location.Location
 import com.kiras.core.domain.location.LocationTimestamp
 import com.kiras.core.presentation.designsystem.LocalIsDarkTheme
 import com.kiras.run.presentation.R
+import com.kiras.run.presentation.active_run.model.RunSplitUi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -47,6 +49,7 @@ fun TrackerMap(
     isRunFinished: Boolean,
     currentLocation: Location?,
     locations: List<List<LocationTimestamp>>,
+    splits: List<RunSplitUi>,
     onSnapshot: (Bitmap) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues()
@@ -73,6 +76,7 @@ fun TrackerMap(
     val primaryColor = MaterialTheme.colorScheme.primary
     val secondaryColor = MaterialTheme.colorScheme.secondary
     val ringColor = MaterialTheme.colorScheme.background
+    val splitNumberColor = MaterialTheme.colorScheme.onSurface
 
     val markerPositionLat by animateFloatAsState(
         targetValue = currentLocation?.lat?.toFloat() ?: 0f,
@@ -107,7 +111,7 @@ fun TrackerMap(
 
     GoogleMap(
         cameraPositionState = cameraPositionState,
-        contentPadding = contentPadding,
+        contentPadding = if(isRunFinished) PaddingValues() else contentPadding,
         properties = MapProperties(
             mapStyleOptions = mapStyle
         ),
@@ -160,6 +164,23 @@ fun TrackerMap(
             }
         }
 
+        splits.forEach { split ->
+            key(split.number) {
+                MarkerComposable(
+                    split.number,
+                    secondaryColor,
+                    ringColor,
+                    splitNumberColor,
+                    state = rememberUpdatedMarkerState(
+                        position = LatLng(split.endLocation.lat, split.endLocation.long)
+                    ),
+                    anchor = Offset(0.5f, 0.5f)
+                ) {
+                    SplitMarker(number = split.number)
+                }
+            }
+        }
+
         if(startPoint != null) {
             MarkerComposable(
                 secondaryColor,
@@ -195,7 +216,8 @@ fun TrackerMap(
                 primaryColor,
                 ringColor,
                 state = marketState,
-                anchor = Offset(0.5f, 0.5f)
+                anchor = Offset(0.5f, 0.5f),
+                zIndex = 1f
             ) {
                 RouteDot(
                     color = primaryColor,

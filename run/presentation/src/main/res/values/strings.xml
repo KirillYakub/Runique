@@ -19,10 +19,8 @@
     <string name="keep_running">Cancel</string>
     <string name="run_map">Run map</string>
     <string name="could_not_load_image">Could not load image</string>
-    <string name="total_running_time">Total running time</string>
-    <string name="avg_speed">Ø Speed</string>
+    <string name="avg_speed">Avg speed</string>
     <string name="max_speed">Max Speed</string>
-    <string name="total_elevation">Total Elevation</string>
     <string name="delete">Delete</string>
     <string name="no_completed_runs_found">No completed runs found</string>
     <string name="move_was_not_started_for_save">You need to move at least once to save the run</string>
@@ -74,4 +72,24 @@
     <string name="day_status_missed">%1$s, missed</string>
     <string name="day_status_upcoming">%1$s, upcoming</string>
     <string name="day_status_rest">%1$s, rest day</string>
+    <string name="splits">Splits</string>
+    <string name="splits_label_min_per_km">min/km</string>
+    <string name="splits_label_min_per_mi">min/mi</string>
+    <string name="splits_label_km_per_hour">km/h</string>
+    <string name="splits_label_miles_per_hour">mph</string>
+    <string name="show_splits">Show splits</string>
+    <string name="hide_splits">Hide splits</string>
+    <string name="splits_empty">Your first split appears after 1 %1$s</string>
+    <string name="elevation">Elevation</string>
+    <string name="go_back">Go back</string>
+    <string name="show_splits_button">Splits</string>
+    <string name="delete_run_hint">Delete run</string>
+    <string name="run_start_and_total_time">%1$s · Total time %2$s</string>
+    <string name="elevation_gain_value">+%1$s</string>
+    <string name="splits_summary_average">Avg %1$s</string>
+    <string name="splits_summary_fastest">Fastest: %1$s %2$d · %3$s</string>
+    <plurals name="all_runs_month_summary">
+        <item quantity="one">%1$d run · %2$s this month</item>
+        <item quantity="other">%1$d runs · %2$s this month</item>
+    </plurals>
 </resources>

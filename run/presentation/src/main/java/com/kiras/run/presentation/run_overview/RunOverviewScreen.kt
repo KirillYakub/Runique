@@ -163,7 +163,11 @@ private fun RunOverviewScreen(
         ) {
             AllRunsPage(
                 runs = state.runs,
+                monthRunCount = state.monthRunCount,
+                monthDistance = state.monthDistance,
+                expandedRunIds = state.expandedRunIds,
                 onBackClick = { onAction(RunOverviewAction.OnAllRunsBackClick) },
+                onSplitsToggle = { onAction(RunOverviewAction.OnRunSplitsToggle(it)) },
                 onDeleteRunClick = { onAction(RunOverviewAction.OnDeleteRunClick(it)) }
             )
         }

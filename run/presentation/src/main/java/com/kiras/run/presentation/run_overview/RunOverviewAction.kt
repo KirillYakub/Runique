@@ -14,6 +14,7 @@ sealed interface RunOverviewAction {
     data object OnSeeAllRunsClick: RunOverviewAction
     data object OnAllRunsBackClick: RunOverviewAction
     data class OnDeleteRunClick(val runUi: RunUi): RunOverviewAction
+    data class OnRunSplitsToggle(val runId: String): RunOverviewAction
     data object OnEditGoalClick: RunOverviewAction
     data object OnGoalSheetDismiss: RunOverviewAction
     data class OnGoalMetricChange(val metric: GoalMetric): RunOverviewAction

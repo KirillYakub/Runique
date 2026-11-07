@@ -15,5 +15,8 @@ data class RunOverviewState(
     val isDailyGoalLoaded: Boolean = false,
     val isGoalSheetOpen: Boolean = false,
     val goalDraft: GoalDraftUi = GoalDraftUi(),
-    val distanceUnit: DistanceUnit = DistanceUnit.KILOMETERS
+    val distanceUnit: DistanceUnit = DistanceUnit.KILOMETERS,
+    val expandedRunIds: Set<String> = emptySet(),
+    val monthRunCount: Int = 0,
+    val monthDistance: String = ""
 )
