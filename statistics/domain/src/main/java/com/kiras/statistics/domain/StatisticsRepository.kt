@@ -1,5 +1,7 @@
 package com.kiras.statistics.domain
 
+import kotlinx.coroutines.flow.Flow
+
 interface StatisticsRepository {
-    suspend fun getStatisticsValues(): StatisticsValues
+    fun getRunEntries(): Flow<List<RunStatsEntry>>
 }

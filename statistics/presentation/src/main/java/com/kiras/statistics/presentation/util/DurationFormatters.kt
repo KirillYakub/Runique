@@ -1,12 +1,15 @@
 package com.kiras.statistics.presentation.util
 
+import com.kiras.statistics.presentation.dashboard.model.StatValueUi
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 
-fun Duration.toFormattedTotalTime(): String {
-    val days = toLong(DurationUnit.DAYS)
-    val hours = toLong(DurationUnit.HOURS) % 24
+fun Duration.toTotalTimeStat(): StatValueUi {
+    val hours = toLong(DurationUnit.HOURS)
     val minutes = toLong(DurationUnit.MINUTES) % 60
 
-    return "${days}d ${hours}h ${minutes}m"
+    return StatValueUi(
+        value = if(hours > 0) "$hours h $minutes" else "$minutes",
+        unit = "min"
+    )
 }

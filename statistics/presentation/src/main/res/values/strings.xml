@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="statistics">Statistics</string>
-    <string name="total_distance_run">Total distance run</string>
-    <string name="total_time_run">Total time run</string>
-    <string name="fastest_ever_run">Fastest ever run</string>
-    <string name="average_distance_per_run">Average distance</string>
+    <plurals name="statistics_subtitle">
+        <item quantity="one">All time · %1$d run</item>
+        <item quantity="other">All time · %1$d runs</item>
+    </plurals>
+    <string name="total_distance_run">Total distance</string>
+    <string name="total_time_run">Total time</string>
+    <string name="fastest_ever_run">Fastest run</string>
+    <string name="average_distance_per_run">Avg distance</string>
     <string name="average_pace">Average pace</string>
     <string name="average_speed">Average speed</string>
+    <string name="this_week">This week</string>
+    <string name="week_change">%1$s vs last week</string>
+    <string name="last_8_weeks">Last 8 weeks</string>
+    <string name="trend_faster">%1$s faster</string>
+    <string name="trend_slower">%1$s slower</string>
+    <string name="trend_no_change">No change</string>
+    <string name="trend_no_runs">No runs in the last 8 weeks</string>
+    <string name="week_chart_description">Distance per day this week: %1$s</string>
+    <string name="trend_chart_description">%1$s over the last 8 weeks: %2$s</string>
 </resources>

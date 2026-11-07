@@ -78,14 +78,14 @@ fun Int.toFormattedMeters(): String {
     return "$this m"
 }
 
-private fun DistanceUnit.toDistanceLabel(): String {
+fun DistanceUnit.toDistanceLabel(): String {
     return when(this) {
         DistanceUnit.KILOMETERS -> "km"
         DistanceUnit.MILES -> "mi"
     }
 }
 
-private fun DistanceUnit.toSpeedLabel(): String {
+fun DistanceUnit.toSpeedLabel(): String {
     return when(this) {
         DistanceUnit.KILOMETERS -> "km/h"
         DistanceUnit.MILES -> "mph"
