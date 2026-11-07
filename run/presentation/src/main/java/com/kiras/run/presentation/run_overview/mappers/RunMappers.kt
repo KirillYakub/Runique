@@ -7,31 +7,45 @@ import com.kiras.core.presentation.ui.formatted
 import com.kiras.core.presentation.ui.toFormattedDistance
 import com.kiras.core.presentation.ui.toFormattedMeters
 import com.kiras.core.presentation.ui.toFormattedPace
+import com.kiras.core.presentation.ui.toFormattedPreciseDistance
 import com.kiras.core.presentation.ui.toFormattedSpeed
 import com.kiras.run.presentation.run_overview.model.RunUi
+import com.kiras.run.presentation.util.toRunDateTitle
+import com.kiras.run.presentation.util.toRunStartTime
+import com.kiras.run.presentation.util.toShortDurationText
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 fun Run.toRunUi(settings: UserSettings): RunUi {
     val dateTimeInLocalTime = dateTimeUtc
         .withZoneSameInstant(ZoneId.systemDefault())
-    val formattedDateTime = DateTimeFormatter
-        .ofPattern("MMM dd, yyyy - hh:mma")
-        .format(dateTimeInLocalTime)
+    val averagePace = duration.toFormattedPace(distanceMeters, settings.distanceUnit)
+    val avgSpeed = avgSpeedKmh.toFormattedSpeed(settings.distanceUnit)
 
     return RunUi(
         id = id!!,
         duration = duration.formatted(),
-        dateTime = formattedDateTime,
+        shortDuration = duration.toShortDurationText(),
+        dateTitle = dateTimeInLocalTime.toRunDateTitle(),
+        startTime = dateTimeInLocalTime.toRunStartTime(),
         localDateTime = dateTimeInLocalTime,
         distance = distanceMeters.toFormattedDistance(settings.distanceUnit),
-        avgSpeed = avgSpeedKmh.toFormattedSpeed(settings.distanceUnit),
+        preciseDistance = distanceMeters.toFormattedPreciseDistance(settings.distanceUnit),
+        avgSpeed = avgSpeed,
         maxSpeed = maxSpeedKmh.toFormattedSpeed(settings.distanceUnit),
         pace = when(settings.paceFormat) {
-            PaceFormat.PACE -> duration.toFormattedPace(distanceMeters, settings.distanceUnit)
+            PaceFormat.PACE -> averagePace
             PaceFormat.SPEED -> null
         },
+        averagePace = averagePace,
         totalElevation = totalElevationMeters.toFormattedMeters(),
-        mapPictureUrl = mapPictureUrl
+        mapPictureUrl = mapPictureUrl,
+        splits = splits.toRunSplitsUi(
+            unit = settings.distanceUnit,
+            paceFormat = settings.paceFormat,
+            averageText = when(settings.paceFormat) {
+                PaceFormat.PACE -> averagePace
+                PaceFormat.SPEED -> avgSpeed
+            }
+        )
     )
 }

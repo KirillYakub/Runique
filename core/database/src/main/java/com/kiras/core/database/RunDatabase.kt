@@ -10,6 +10,7 @@ import com.kiras.core.database.dao.UserDao
 import com.kiras.core.database.dao.UserSettingsDao
 import com.kiras.core.database.entity.DailyGoalEntity
 import com.kiras.core.database.entity.RunEntity
+import com.kiras.core.database.entity.RunSplitEntity
 import com.kiras.core.database.entity.UserEntity
 import com.kiras.core.database.entity.UserSettingsEntity
 
@@ -18,13 +19,15 @@ import com.kiras.core.database.entity.UserSettingsEntity
         UserEntity::class,
         RunEntity::class,
         DailyGoalEntity::class,
-        UserSettingsEntity::class
+        UserSettingsEntity::class,
+        RunSplitEntity::class
     ],
-    version = 5,
+    version = 6,
     autoMigrations = [
         AutoMigration(from = 2, to = 3),
         AutoMigration(from = 3, to = 4),
-        AutoMigration(from = 4, to = 5)
+        AutoMigration(from = 4, to = 5),
+        AutoMigration(from = 5, to = 6)
     ]
 )
 abstract class RunDatabase: RoomDatabase() {

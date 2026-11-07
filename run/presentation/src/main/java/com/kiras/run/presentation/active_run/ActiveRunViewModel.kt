@@ -7,14 +7,19 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kiras.core.domain.location.Location
+import com.kiras.core.domain.location.LocationTimestamp
 import com.kiras.core.domain.run.Run
 import com.kiras.core.domain.settings.CountdownDuration
+import com.kiras.core.domain.settings.DistanceUnit
+import com.kiras.core.domain.settings.PaceFormat
 import com.kiras.core.domain.settings.SettingsRepository
 import com.kiras.core.domain.util.Result
 import com.kiras.core.presentation.ui.asUiText
 import com.kiras.run.domain.LocationDataCalculator
 import com.kiras.run.domain.RunningTracker
 import com.kiras.core.domain.run.RunRepository
+import com.kiras.run.presentation.active_run.mappers.toRunSplitUis
+import com.kiras.run.presentation.active_run.model.RunSplitUi
 import com.kiras.run.presentation.active_run.service.ActiveRunService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -94,7 +99,8 @@ class ActiveRunViewModel(
             .onEach {
                 state = state.copy(
                     runData = it,
-                    maxSpeedKmh = LocationDataCalculator.getMaxSpeedKmh(it.locations)
+                    maxSpeedKmh = LocationDataCalculator.getMaxSpeedKmh(it.locations),
+                    splits = buildSplits(it.locations, state.distanceUnit, state.paceFormat)
                 )
             }
             .launchIn(viewModelScope)
@@ -115,7 +121,12 @@ class ActiveRunViewModel(
                     distanceUnit = settings.distanceUnit,
                     paceFormat = settings.paceFormat,
                     countdown = settings.countdown,
-                    keepScreenOn = settings.keepScreenOn
+                    keepScreenOn = settings.keepScreenOn,
+                    splits = buildSplits(
+                        locations = state.runData.locations,
+                        unit = settings.distanceUnit,
+                        paceFormat = settings.paceFormat
+                    )
                 )
             }
             .launchIn(viewModelScope)
@@ -158,6 +169,9 @@ class ActiveRunViewModel(
                 }
             }
             ActiveRunAction.OnCancelCountdownClick -> cancelCountdown()
+            ActiveRunAction.OnSplitsToggle -> {
+                state = state.copy(isSplitsExpanded = !state.isSplitsExpanded)
+            }
             is ActiveRunAction.OnSubmitLocationPermissionInfo -> {
                 hasLocationPermission.value = action.acceptedLocationPermission
                 state = state.copy(
@@ -182,6 +196,16 @@ class ActiveRunViewModel(
         }
     }
 
+    private fun buildSplits(
+        locations: List<List<LocationTimestamp>>,
+        unit: DistanceUnit,
+        paceFormat: PaceFormat
+    ): List<RunSplitUi> {
+        return LocationDataCalculator
+            .getSplits(locations, unit.metersPerUnit)
+            .toRunSplitUis(unit, paceFormat)
+    }
+
     private fun finishRun(mapPictureBytes: ByteArray) {
         val locations = state.runData.locations
         viewModelScope.launch {
@@ -203,7 +227,8 @@ class ActiveRunViewModel(
                     location = state.currentLocation ?: Location(0.0, 0.0),
                     maxSpeedKmh = LocationDataCalculator.getMaxSpeedKmh(locations),
                     totalElevationMeters = LocationDataCalculator.getTotalElevationMeters(locations),
-                    mapPictureUrl = null
+                    mapPictureUrl = null,
+                    splits = LocationDataCalculator.getRecordedSplits(locations)
                 )
 
                 runningTracker.finishRun()

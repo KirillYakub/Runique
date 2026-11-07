@@ -1,93 +1,115 @@
 package com.kiras.run.presentation.run_overview.components
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kiras.core.domain.location.Location
+import com.kiras.core.domain.run.RecordedSplit
 import com.kiras.core.domain.run.Run
+import com.kiras.core.domain.settings.DistanceUnit
 import com.kiras.core.domain.settings.UserSettings
-import com.kiras.core.presentation.designsystem.CalendarIcon
-import com.kiras.core.presentation.designsystem.RunOutlinedIcon
+import com.kiras.core.presentation.designsystem.RunNavigationIcon
 import com.kiras.core.presentation.designsystem.SplitlineTheme
-import com.kiras.core.presentation.designsystem.components.util.DropDownItem
 import com.kiras.run.presentation.R
 import com.kiras.run.presentation.run_overview.mappers.toRunUi
 import com.kiras.run.presentation.run_overview.model.RunDataUi
+import com.kiras.run.presentation.run_overview.model.RunSplitsUi
 import com.kiras.run.presentation.run_overview.model.RunUi
 import java.time.ZonedDateTime
-import kotlin.math.max
 import kotlin.time.Duration.Companion.minutes
 
 @Composable
 fun RunListItem(
     runUi: RunUi,
+    isSplitsExpanded: Boolean,
+    onSplitsToggle: () -> Unit,
     onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val shape = RoundedCornerShape(20.dp)
     var showDropDown by remember { mutableStateOf(false) }
-    Box {
+
+    Box(modifier = modifier) {
         Column(
-            modifier = modifier
-                .clip(RoundedCornerShape(15.dp))
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(shape)
                 .background(MaterialTheme.colorScheme.surface)
+                .border(1.dp, MaterialTheme.colorScheme.surfaceContainerHighest, shape)
                 .combinedClickable(
                     onClick = {},
+                    onLongClickLabel = stringResource(R.string.delete_run_hint),
                     onLongClick = { showDropDown = true }
                 )
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
             MapImage(
                 imageUrl = runUi.mapPictureUrl,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(16 / 9f)
+                    .height(160.dp)
             )
-            RunningTimeSection(
-                duration = runUi.duration,
-                modifier = Modifier.fillMaxWidth()
+            RunCardHeader(runUi = runUi)
+            RunCardStatRow(
+                stats = listOf(
+                    RunDataUi(stringResource(R.string.time), runUi.shortDuration),
+                    RunDataUi(stringResource(R.string.distance), runUi.preciseDistance),
+                    RunDataUi(stringResource(R.string.pace), runUi.averagePace)
+                )
             )
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-            RunningDateSection(dateTime = runUi.dateTime)
-            DataGrid(
-                runUi = runUi,
-                modifier = Modifier.fillMaxWidth()
+            RunCardStatRow(
+                stats = listOf(
+                    RunDataUi(stringResource(R.string.avg_speed), runUi.avgSpeed),
+                    RunDataUi(stringResource(R.string.max_speed), runUi.maxSpeed),
+                    RunDataUi(
+                        stringResource(R.string.elevation),
+                        stringResource(R.string.elevation_gain_value, runUi.totalElevation)
+                    )
+                )
             )
+            if(runUi.splits != null) {
+                RunCardSplits(
+                    splits = runUi.splits,
+                    isExpanded = isSplitsExpanded,
+                    onToggle = onSplitsToggle
+                )
+            }
         }
         DropdownMenu(
             expanded = showDropDown,
@@ -107,161 +129,163 @@ fun RunListItem(
 }
 
 @Composable
-private fun RunningDateSection(
-    dateTime: String,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            imageVector = CalendarIcon,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(
-            text = dateTime,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
-}
-
-@Composable
-fun DataGrid(
+private fun RunCardHeader(
     runUi: RunUi,
     modifier: Modifier = Modifier
 ) {
-    val runDataUiList = listOfNotNull(
-        RunDataUi(
-            name = stringResource(R.string.distance),
-            value = runUi.distance
-        ),
-        runUi.pace?.let { pace ->
-            RunDataUi(
-                name = stringResource(R.string.pace),
-                value = pace
-            )
-        },
-        RunDataUi(
-            name = stringResource(R.string.avg_speed),
-            value = runUi.avgSpeed
-        ),
-        RunDataUi(
-            name = stringResource(R.string.max_speed),
-            value = runUi.maxSpeed
-        ),
-        RunDataUi(
-            name = stringResource(R.string.total_elevation),
-            value = runUi.totalElevation
-        ),
-    )
-
-    var maxWidth by remember { mutableIntStateOf(0) }
-    val maxWidthDp = with(LocalDensity.current) { maxWidth.toDp() }
-    FlowRow(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        runDataUiList.forEach { runDataUi ->
-            DataGridCell(
-                runDataUi = runDataUi,
-                modifier = Modifier
-                    .defaultMinSize(minWidth = maxWidthDp)
-                    .onSizeChanged {
-                        maxWidth = max(maxWidth, it.width)
-                    }
-            )
-        }
-    }
-}
-
-@Composable
-fun RunningTimeSection(
-    duration: String,
-    modifier: Modifier = Modifier
-) {
+    val shape = RoundedCornerShape(12.dp)
     Row(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
             modifier = Modifier
-                .size(40.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
+                .size(44.dp)
+                .clip(shape)
+                .background(MaterialTheme.colorScheme.primaryContainer)
                 .border(
                     width = 1.dp,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .padding(4.dp),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.35f),
+                    shape = shape
+                ),
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = RunOutlinedIcon,
+                imageVector = RunNavigationIcon,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.rotate(45f)
+                modifier = Modifier.size(20.dp)
             )
         }
-        Spacer(modifier = Modifier.width(16.dp))
         Column(
-            modifier = Modifier
-                .weight(1f),
-            verticalArrangement = Arrangement.Center
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
             Text(
-                text = stringResource(R.string.total_running_time),
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                text = runUi.dateTitle,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = duration,
-                color = MaterialTheme.colorScheme.onSurface
+                text = stringResource(
+                    R.string.run_start_and_total_time,
+                    runUi.startTime,
+                    runUi.shortDuration
+                ),
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
 }
 
 @Composable
-private fun DataGridCell(
-    runDataUi: RunDataUi,
+private fun RunCardStatRow(
+    stats: List<RunDataUi>,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        stats.forEach { stat ->
+            RunCardStat(
+                stat = stat,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+            )
+        }
+    }
+}
+
+@Composable
+private fun RunCardStat(
+    stat: RunDataUi,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
+            .clip(RoundedCornerShape(14.dp))
+            .background(MaterialTheme.colorScheme.background)
+            .padding(horizontal = 10.dp, vertical = 12.dp)
+            .semantics(mergeDescendants = true) {},
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
-            text = runDataUi.name,
+            text = stat.name.uppercase(),
+            style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.bodySmall
+            maxLines = 1
         )
-        Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = runDataUi.value,
-            color = MaterialTheme.colorScheme.onSurface
+            text = stat.value,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface,
+            maxLines = 2
+        )
+    }
+}
+
+@Composable
+private fun RunCardSplits(
+    splits: RunSplitsUi,
+    isExpanded: Boolean,
+    onToggle: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        AnimatedContent(
+            targetState = isExpanded,
+            transitionSpec = {
+                fadeIn() togetherWith fadeOut() using SizeTransform(clip = true)
+            },
+            contentAlignment = Alignment.TopCenter,
+            label = "run_splits_panel",
+            modifier = Modifier.fillMaxWidth()
+        ) { expanded ->
+            if(expanded) {
+                RunSplitsPanel(
+                    splits = splits,
+                    modifier = Modifier.padding(bottom = 14.dp)
+                )
+            } else {
+                Spacer(modifier = Modifier.fillMaxWidth())
+            }
+        }
+        RunSplitsButton(
+            isExpanded = isExpanded,
+            onClick = onToggle
         )
     }
 }
 
 @Preview
 @Composable
-private fun RunListPreview() {
+private fun RunListItemPreview() {
     SplitlineTheme {
         RunListItem(
             runUi = Run(
                 id = "123",
                 duration = 10.minutes,
                 dateTimeUtc = ZonedDateTime.now(),
-                distanceMeters = 1000,
+                distanceMeters = 1420,
                 location = Location(0.0, 0.0),
                 maxSpeedKmh = 12.543,
                 totalElevationMeters = 120,
-                mapPictureUrl = null
+                mapPictureUrl = null,
+                splits = listOf(
+                    RecordedSplit(DistanceUnit.KILOMETERS, 1, 1000.0, 7.minutes),
+                    RecordedSplit(DistanceUnit.KILOMETERS, 2, 420.0, 3.minutes)
+                )
             ).toRunUi(UserSettings()),
-            onDeleteClick = { }
+            isSplitsExpanded = true,
+            onSplitsToggle = {},
+            onDeleteClick = {}
         )
     }
 }

@@ -28,6 +28,10 @@ fun Int.toFormattedDistance(unit: DistanceUnit): String {
     return toDouble().toFormattedDistance(unit)
 }
 
+fun Int.toFormattedPreciseDistance(unit: DistanceUnit): String {
+    return "${(this / unit.metersPerUnit).roundToDecimals(2)} ${unit.toDistanceLabel()}"
+}
+
 fun Duration.toFormattedPace(distanceMeters: Int, unit: DistanceUnit): String {
     val distanceInUnits = distanceMeters / unit.metersPerUnit
     if(this == Duration.ZERO || distanceInUnits <= 0.0) {

@@ -4,6 +4,7 @@ import android.database.sqlite.SQLiteFullException
 import com.kiras.core.database.dao.RunDao
 import com.kiras.core.database.mappers.toRun
 import com.kiras.core.database.mappers.toRunEntity
+import com.kiras.core.database.mappers.toRunSplitEntity
 import com.kiras.core.domain.run.LocalRunDataSource
 import com.kiras.core.domain.run.Run
 import com.kiras.core.domain.run.RunId
@@ -25,7 +26,10 @@ class RoomLocalRunDataSource(
     override suspend fun upsertRun(run: Run, userId: String): Result<RunId, DataError.Local> {
         return try {
             val entity = run.toRunEntity(userId)
-            runDao.upsertRun(entity)
+            runDao.upsertRunWithSplits(
+                run = entity,
+                splits = run.splits.map { it.toRunSplitEntity(entity.id) }
+            )
             Result.Success(entity.id)
         } catch (e: SQLiteFullException) {
             Result.Error(DataError.Local.DISC_FULL)
