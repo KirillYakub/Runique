@@ -42,9 +42,11 @@ internal fun Project.configureBuildTypes(
 private fun BuildType.configureReleaseBuildType(
     commonExtension: CommonExtension<*, *, *, *, *, *>
 ) {
-    isMinifyEnabled = false
+    isMinifyEnabled = true
+    isShrinkResources = true
     proguardFiles(
         commonExtension.getDefaultProguardFile("proguard-android-optimize.txt"),
         "proguard-rules.pro"
     )
 }
+
